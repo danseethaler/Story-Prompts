@@ -1,9 +1,9 @@
 import ViewPager from '@react-native-community/viewpager';
 import _ from 'lodash';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Animated, Button} from 'react-native';
 import {BothSafeArea, NextButton} from 'wComponents';
-import {useGetColorsFromCards} from 'wHooks';
+import {useAppContext, useGetColorsFromCards} from 'wHooks';
 import {ModalStackNavProps} from 'wTypes';
 import Card from './Card';
 import WContainer from './components/WContainer';
@@ -14,10 +14,21 @@ const shuffledCards = _.shuffle(cardData);
 type Props = ModalStackNavProps<'Dashboard'>;
 
 const Dashboard: React.FC<Props> = ({navigation}) => {
+  const {filter} = useAppContext();
+
+  const [cards, setCards] = useState(shuffledCards);
+
+  useEffect(() => {
+    if (filter === null) {
+      setCards(shuffledCards);
+    } else {
+      setCards(_.filter(shuffledCards, {category: filter}));
+      viewPagerRef.current?.setPage(0);
+    }
+  }, [filter]);
+
   const [cardIndex, setCardIndex] = useState(0);
-  const [scrollUpdater, getColorsFromCards] = useGetColorsFromCards(
-    shuffledCards,
-  );
+  const [scrollUpdater, getColorsFromCards] = useGetColorsFromCards(cards);
   const colors = getColorsFromCards(cardIndex);
 
   const viewPagerRef = useRef<ViewPager>();
@@ -52,7 +63,7 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
               setCardIndex(event.nativeEvent.position);
             }
           }}>
-          {_.map(shuffledCards, (card, cardIndex) => {
+          {_.map(cards, (card, cardIndex) => {
             const positionTransform = animatedPositionValue.interpolate({
               inputRange: [cardIndex - 1, cardIndex, cardIndex + 1],
               outputRange: [50, 0, 50],
@@ -76,9 +87,7 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
           <NextButton
             colors={colors}
             onPress={() => {
-              const nextIndex = shuffledCards[cardIndex + 1]
-                ? cardIndex + 1
-                : 0;
+              const nextIndex = cards[cardIndex + 1] ? cardIndex + 1 : 0;
               viewPagerRef.current?.setPage(nextIndex);
             }}
           />

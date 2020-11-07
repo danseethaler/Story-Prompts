@@ -43,7 +43,10 @@ const Categories: React.FC<Props> = ({navigation}) => {
               <CategoryButton
                 key={category.key}
                 category={category}
-                onPress={() => updateContext({filter: category.key})}
+                onPress={() => {
+                  updateContext({filter: category.key});
+                  navigation.pop();
+                }}
               />
             );
           })}
@@ -54,7 +57,10 @@ const Categories: React.FC<Props> = ({navigation}) => {
               borderRadius: 60,
               margin: theme.baseUnit * 2,
             }}
-            onPress={() => updateContext({filter: null})}>
+            onPress={() => {
+              updateContext({filter: null});
+              navigation.pop();
+            }}>
             <Text
               adjustsFontSizeToFit
               numberOfLines={1}
