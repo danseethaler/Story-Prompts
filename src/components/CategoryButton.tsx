@@ -6,16 +6,14 @@ import {CategoryType} from 'wTypes';
 
 interface Props {
   category: CategoryType;
+  onPress: () => void;
 }
 
-const CategoryButton: React.FC<Props> = ({category}) => {
+const CategoryButton: React.FC<Props> = ({category, onPress}) => {
   const theme = useStyledTheme();
 
   return (
-    <Pressable
-      onPress={() => {
-        console.log('Set category', category.key);
-      }}>
+    <Pressable onPress={onPress}>
       <LinearGradient
         colors={[category.color, category.colorLight]}
         start={{x: 0, y: 1}}

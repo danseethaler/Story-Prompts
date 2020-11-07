@@ -1,6 +1,14 @@
 import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
+export interface AppState {
+  filter: null | CategoryKeys;
+}
+
+export interface AppContextType extends AppState {
+  updateContext: (state: Partial<AppContextType>) => void;
+}
+
 export type CategoryKeys =
   | 'emotional'
   | 'environmental'

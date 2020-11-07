@@ -3,6 +3,7 @@ import React from 'react';
 import {Pressable, Text} from 'react-native';
 import {CategoryButton, PartialModal, WContainer} from 'wComponents';
 import {categories} from 'wConfig';
+import {useAppContext} from 'wHooks';
 import {ModalStackNavProps} from 'wTypes';
 import {useStyledTheme} from './styled/styled';
 
@@ -10,6 +11,7 @@ type Props = ModalStackNavProps<'Categories'>;
 
 const Categories: React.FC<Props> = ({navigation}) => {
   const theme = useStyledTheme();
+  const {filter, updateContext} = useAppContext();
 
   return (
     <PartialModal closeModal={() => navigation.pop()}>
@@ -37,7 +39,13 @@ const Categories: React.FC<Props> = ({navigation}) => {
         </Text>
         <WContainer row style={{flexWrap: 'wrap'}} justify="center" stretch>
           {_.map(categories, (category) => {
-            return <CategoryButton key={category.key} category={category} />;
+            return (
+              <CategoryButton
+                key={category.key}
+                category={category}
+                onPress={() => updateContext({filter: category.key})}
+              />
+            );
           })}
 
           <Pressable
@@ -46,9 +54,7 @@ const Categories: React.FC<Props> = ({navigation}) => {
               borderRadius: 60,
               margin: theme.baseUnit * 2,
             }}
-            onPress={() => {
-              console.log('setit');
-            }}>
+            onPress={() => updateContext({filter: null})}>
             <Text
               adjustsFontSizeToFit
               numberOfLines={1}
