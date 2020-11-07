@@ -20,6 +20,7 @@ const Card: React.FC<Props> = ({
 }) => {
   const theme = useStyledTheme();
   const categoryColor = theme.categoryColors[category];
+  const categoryColorLight = theme.categoryColorsLight[category];
   const {title} = categories[category];
 
   return (
@@ -34,7 +35,7 @@ const Card: React.FC<Props> = ({
           <WContainer
             wPadding={[0.5, 2]}
             style={{
-              backgroundColor: theme.categoryColorsLight[category],
+              backgroundColor: categoryColorLight,
               borderRadius: 22,
             }}>
             <Text
@@ -50,47 +51,29 @@ const Card: React.FC<Props> = ({
             </Text>
           </WContainer>
 
-          <WContainer stretch row wPadding={[3, 0]}>
+          <WContainer stretch align="center" justify="center" wPadding={[3, 0]}>
             {song ? (
               <Ionicons
-                name="ios-musical-note"
+                name="ios-musical-notes"
                 size={20}
-                style={{alignSelf: 'flex-start'}}
                 color={theme.colors.text100}
               />
             ) : (
               <FontAwesome
                 name="quote-left"
                 size={20}
-                style={{alignSelf: 'flex-start'}}
                 color={theme.colors.text100}
               />
             )}
-            <WContainer align="center" flex={1} wPadding={2}>
-              <Text
-                style={{
-                  textAlign: 'center',
-                  fontSize: 32,
-                  color: theme.colors.white,
-                }}>
-                {quote}
-              </Text>
-            </WContainer>
-            {song ? (
-              <Ionicons
-                name="ios-musical-notes"
-                size={20}
-                style={{alignSelf: 'flex-end'}}
-                color={theme.colors.text100}
-              />
-            ) : (
-              <FontAwesome
-                name="quote-right"
-                size={20}
-                style={{alignSelf: 'flex-end'}}
-                color={theme.colors.text100}
-              />
-            )}
+            <Text
+              style={{
+                textAlign: 'center',
+                paddingVertical: theme.baseUnit * 3,
+                fontSize: 32,
+                color: theme.colors.white,
+              }}>
+              {quote}
+            </Text>
           </WContainer>
 
           <Text
@@ -99,7 +82,7 @@ const Card: React.FC<Props> = ({
               fontSize: 22,
               fontFamily: 'Avenir Next',
               fontWeight: '500',
-              color: hexToRgb(categoryColor, 1, 3.5),
+              color: categoryColorLight,
             }}>
             {prompt}
           </Text>
