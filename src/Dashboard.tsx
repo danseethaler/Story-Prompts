@@ -43,7 +43,10 @@ const Dashboard: React.FC = () => {
           <NextButton
             colors={colors}
             onPress={() => {
-              viewPagerRef.current?.setPage(cardIndex + 1);
+              const nextIndex = shuffledCards[cardIndex + 1]
+                ? cardIndex + 1
+                : 0;
+              viewPagerRef.current?.setPage(nextIndex);
             }}
           />
         </WContainer>
