@@ -8,13 +8,10 @@ import Card from './Card';
 import WContainer from './components/WContainer';
 import cardData from './config/cardData';
 
-const getRandomCardIndex = () => _.random(cardData.length - 1);
-
-const initialRandomNumber = getRandomCardIndex();
 const shuffledCards = _.shuffle(cardData);
 
 const Dashboard: React.FC = () => {
-  const [cardIndex, setCardIndex] = useState(initialRandomNumber);
+  const [cardIndex, setCardIndex] = useState(0);
   const [scrollUpdater, getColorsFromCards] = useGetColorsFromCards(
     shuffledCards,
   );
