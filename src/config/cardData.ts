@@ -1,47 +1,57 @@
 import _ from 'lodash';
 import {CategoryColorsType} from 'wStyled';
-import {CardType} from 'wTypes';
+import {CardType, CategoryKeys, CategoryType} from 'wTypes';
 
-export const categories = {
+export const categories: {
+  [key in CategoryKeys]: CategoryType;
+} = {
   emotional: {
+    key: 'emotional',
     title: 'Emotional',
-    color: '#C20000',
-    colorLight: '#FF4747',
+    color: '#FD3E7E',
+    colorLight: '#F5A051',
   },
   environmental: {
+    key: 'environmental',
     title: 'Environmental',
-    color: '#05914E',
-    colorLight: '#64FFA7',
+    color: '#8F048F',
+    colorLight: '#FF66A3',
   },
   intellectual: {
+    key: 'intellectual',
     title: 'Intellectual',
-    color: '#285DB8',
-    colorLight: '#4683EF',
+    color: '#0071BD',
+    colorLight: '#20BFFE',
   },
   occupational: {
+    key: 'occupational',
     title: 'Occupational',
-    color: '#8F8F8F',
-    colorLight: '#FFF9F5',
+    color: '#00AD8E',
+    colorLight: '#B1ED4A',
   },
   physical: {
+    key: 'physical',
     title: 'Physical',
-    color: '#F59E00',
-    colorLight: '#EFAE3E',
+    color: '#FA8638',
+    colorLight: '#FBCA3A',
   },
   social: {
+    key: 'social',
     title: 'Social',
-    color: '#8B3FFE',
-    colorLight: '#B83AFF',
+    color: '#5329F0',
+    colorLight: '#9B66DC',
   },
   spiritual: {
+    key: 'spiritual',
     title: 'Spiritual',
     color: '#047F8F',
-    colorLight: '#66F2FF',
+    colorLight: '#66FFE0',
   },
   wild: {
+    key: 'wild',
     title: 'Wild',
-    color: '#8F047F',
-    colorLight: '#FF66FA',
+    color: '#09A0CE',
+    colorLight: '#EB00E3',
   },
 };
 
@@ -289,7 +299,7 @@ const cardData: CardType[] = [
     song: true,
   },
   {
-    quote: 'It does not matter. He believes in you.',
+    quote: "It doesn't matter. He believes in you.",
     prompt: 'Share a story about the evidence you have to believe in God.',
     category: 'spiritual',
   },
