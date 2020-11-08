@@ -20,8 +20,8 @@ export const categories: {
   intellectual: {
     key: 'intellectual',
     title: 'Intellectual',
-    color: '#0071BD',
-    colorLight: '#20BFFE',
+    color: '#024A97',
+    colorLight: '#669EFF',
   },
   occupational: {
     key: 'occupational',
@@ -44,8 +44,8 @@ export const categories: {
   spiritual: {
     key: 'spiritual',
     title: 'Spiritual',
-    color: '#047F8F',
-    colorLight: '#66FFE0',
+    color: '#00998C',
+    colorLight: '#7AFFE9',
   },
   wild: {
     key: 'wild',
