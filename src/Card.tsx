@@ -1,11 +1,11 @@
 import {FontAwesome, Ionicons} from '@expo/vector-icons';
+import {LinearGradient} from 'expo-linear-gradient';
 import React from 'react';
 import {Animated, Text} from 'react-native';
 import WContainer from './components/WContainer';
 import {categories} from './config/cardData';
 import {CardType} from './definitions';
 import {useStyledTheme} from './styled/styled';
-import {hexToRgb} from './styled/utils';
 
 interface Props extends CardType {
   transforms: any;
@@ -33,22 +33,31 @@ const Card: React.FC<Props> = ({
           justify="space-between"
           stretch>
           <WContainer
-            wPadding={[0.5, 2]}
             style={{
-              backgroundColor: categoryColorLight,
               borderRadius: 22,
+              overflow: 'hidden',
             }}>
-            <Text
+            <LinearGradient
+              colors={[categoryColor, categoryColorLight]}
+              start={{x: 0, y: 1}}
+              end={{x: 1, y: 1}}
               style={{
-                fontWeight: '600',
-                letterSpacing: 1.4,
-                fontFamily: 'Avenir Next',
-                textAlign: 'center',
-                fontSize: 18,
-                color: '#1B1B24',
+                paddingVertical: 4,
+                paddingHorizontal: 16,
+                backgroundColor: categoryColorLight,
               }}>
-              {title}
-            </Text>
+              <Text
+                style={{
+                  fontWeight: '600',
+                  letterSpacing: 1.4,
+                  fontFamily: 'Avenir Next',
+                  textAlign: 'center',
+                  fontSize: 18,
+                  color: theme.colors.white,
+                }}>
+                {title}
+              </Text>
+            </LinearGradient>
           </WContainer>
 
           <WContainer stretch align="center" justify="center" wPadding={[3, 0]}>
@@ -69,8 +78,9 @@ const Card: React.FC<Props> = ({
               style={{
                 textAlign: 'center',
                 paddingVertical: theme.baseUnit * 3,
-                fontSize: 32,
+                fontSize: 28,
                 color: theme.colors.white,
+                lineHeight: 48,
               }}>
               {quote}
             </Text>
