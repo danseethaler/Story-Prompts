@@ -1,29 +1,40 @@
+import {MaterialCommunityIcons} from '@expo/vector-icons';
 import ViewPager from '@react-native-community/viewpager';
 import _ from 'lodash';
 import React, {useEffect, useRef, useState} from 'react';
-import {Animated, Button} from 'react-native';
-import {BothSafeArea, NextButton} from 'wComponents';
+import {Animated, Text} from 'react-native';
+import {BothSafeArea, LinearButton} from 'wComponents';
 import {useAppContext, useGetColorsFromCards} from 'wHooks';
 import {ModalStackNavProps} from 'wTypes';
 import Card from './Card';
 import WContainer from './components/WContainer';
 import cardData from './config/cardData';
+import {useStyledTheme} from './styled/styled';
 
 const shuffledCards = _.shuffle(cardData);
 
 type Props = ModalStackNavProps<'Dashboard'>;
 
+let firstRun = true;
+
 const Dashboard: React.FC<Props> = ({navigation}) => {
+  const theme = useStyledTheme();
   const {filter} = useAppContext();
 
   const [cards, setCards] = useState(shuffledCards);
 
   useEffect(() => {
+    if (firstRun) {
+      firstRun = false;
+      return;
+    }
+
+    viewPagerRef.current?.setPage(0);
+
     if (filter === null) {
       setCards(shuffledCards);
     } else {
       setCards(_.filter(shuffledCards, {category: filter}));
-      viewPagerRef.current?.setPage(0);
     }
   }, [filter]);
 
@@ -42,12 +53,25 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
   return (
     <BothSafeArea bottomColor="#1B1B24">
       <WContainer flex={1} stretch wPadding={[3, 0]}>
-        <Button
-          onPress={() => {
-            navigation.navigate('Categories');
-          }}
-          title="Show Categories"
-        />
+        <WContainer align="flex-end" stretch wPaddingRight={4}>
+          <LinearButton
+            viewStyle={{
+              borderRadius: 40,
+              overflow: 'hidden',
+            }}
+            touchStyle={{
+              padding: 12,
+              align: 'center',
+            }}
+            gradientColor1={colors[0]}
+            gradientColor2={colors[1]}
+            onPress={() => {
+              navigation.navigate('Categories');
+            }}>
+            <MaterialCommunityIcons name="cards" size={32} color="#1B1B24" />
+          </LinearButton>
+        </WContainer>
+
         <ViewPager
           ref={viewPagerRef as any}
           style={{flex: 1}}
@@ -84,13 +108,39 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
           })}
         </ViewPager>
         <WContainer align="center" stretch>
-          <NextButton
-            colors={colors}
+          <LinearButton
+            viewStyle={{
+              borderRadius: 40,
+              overflow: 'hidden',
+            }}
+            touchStyle={{
+              paddingHorizontal: 100,
+              paddingVertical: 14,
+            }}
+            gradientColor1={colors[0]}
+            gradientColor2={colors[1]}
             onPress={() => {
               const nextIndex = cards[cardIndex + 1] ? cardIndex + 1 : 0;
               viewPagerRef.current?.setPage(nextIndex);
-            }}
-          />
+            }}>
+            <WContainer row align="center" justify="center">
+              <Text
+                style={{
+                  fontSize: 26,
+                  color: theme.colors.white,
+                  fontFamily: 'Avenir Next',
+                  fontWeight: '600',
+                }}>
+                Next
+              </Text>
+              <MaterialCommunityIcons
+                name="arrow-right"
+                size={28}
+                style={{marginLeft: theme.baseUnit * 1.5}}
+                color={theme.colors.white}
+              />
+            </WContainer>
+          </LinearButton>
         </WContainer>
       </WContainer>
     </BothSafeArea>
