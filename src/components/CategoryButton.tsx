@@ -20,11 +20,9 @@ const CategoryButton: React.FC<Props> = ({category, onPress}) => {
         end={{x: 1, y: 1}}
         style={{
           borderRadius: 10,
-          alignSelf: 'stretch',
+          width: screenWidth / 2 - 32,
+          marginHorizontal: 8,
           alignItems: 'center',
-          justifyContent: 'center',
-          width: screenWidth / 2 - 48,
-          marginHorizontal: 16,
           marginVertical: 8,
         }}>
         <Text
