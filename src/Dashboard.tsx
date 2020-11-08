@@ -6,7 +6,7 @@ import {Animated, Text} from 'react-native';
 import {BothSafeArea, LinearButton} from 'wComponents';
 import {useAppContext, useGetColorsFromCards} from 'wHooks';
 import {ModalStackNavProps} from 'wTypes';
-import Card from './Card';
+import CardStack from './CardStack';
 import WContainer from './components/WContainer';
 import cardData from './config/cardData';
 import {useStyledTheme} from './styled/styled';
@@ -72,7 +72,9 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
           </LinearButton>
         </WContainer>
 
-        <ViewPager
+        <CardStack />
+
+        {/* <ViewPager
           ref={viewPagerRef as any}
           style={{flex: 1}}
           initialPage={0}
@@ -106,7 +108,7 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
 
             return <Card key={card.quote} transforms={transforms} {...card} />;
           })}
-        </ViewPager>
+        </ViewPager> */}
         <WContainer align="center" stretch>
           <LinearButton
             viewStyle={{
