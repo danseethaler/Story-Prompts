@@ -60,7 +60,6 @@ const Card: React.FC<Props> = ({
           <Text
             style={{
               fontWeight: '600',
-              letterSpacing: 1.4,
               fontFamily: 'Avenir Next',
               textAlign: 'center',
               fontSize: 18,
@@ -131,7 +130,6 @@ const Card: React.FC<Props> = ({
             <Text
               style={{
                 fontWeight: '600',
-                letterSpacing: 1.4,
                 fontFamily: 'Avenir Next',
                 textAlign: 'center',
                 fontSize: 18,

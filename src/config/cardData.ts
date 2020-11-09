@@ -14,8 +14,8 @@ export const categories: {
   environmental: {
     key: 'environmental',
     title: 'Environmental',
-    color: '#8F048F',
-    colorLight: '#FF66A3',
+    color: '#00AD8E',
+    colorLight: '#B1ED4A',
   },
   intellectual: {
     key: 'intellectual',
@@ -26,8 +26,8 @@ export const categories: {
   occupational: {
     key: 'occupational',
     title: 'Occupational',
-    color: '#00AD8E',
-    colorLight: '#B1ED4A',
+    color: '#8F048F',
+    colorLight: '#FF66A3',
   },
   physical: {
     key: 'physical',
