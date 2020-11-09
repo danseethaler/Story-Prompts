@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {Text} from 'react-native';
 import {BothSafeArea, LinearButton} from 'wComponents';
 import {useAppContext, useGetColorsFromCards} from 'wHooks';
-import {ModalStackNavProps} from 'wTypes';
+import {CardType, ModalStackNavProps} from 'wTypes';
 import CardStack from './CardStack';
 import WContainer from './components/WContainer';
 import cardData from './config/cardData';
@@ -36,6 +36,17 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
     .slice(activeIndex, activeIndex + 4)
     .reverse()
     .value();
+
+  if (cards.length < 4) {
+    cards.unshift({
+      prompt: '',
+      quote: '',
+      // Use the most recent card category - this will make the color stay the
+      // same between the second to last category and the last category
+      category: (_.last(storedCards) as CardType).category,
+      finished: true,
+    });
+  }
 
   const [
     offSetMoveHandler,

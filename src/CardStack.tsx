@@ -128,14 +128,13 @@ const CardStack: React.FC<Props> = ({
         }}>
         {_.map(cards, (card, index) => {
           const topFirstIndex = cards.length - index - 1;
-          const baseOpacity = 1 - topFirstIndex / 3;
           const isPrimaryCard = topFirstIndex === 0;
           const isSecondCard = topFirstIndex === 1;
           const isThirdCard = topFirstIndex === 2;
           const isFourthCard = topFirstIndex === 3;
 
           const style: any = {
-            opacity: baseOpacity,
+            opacity: 1,
           };
 
           const contentStyle: any = {};
@@ -234,14 +233,17 @@ const CardStack: React.FC<Props> = ({
             contentStyle.opacity = 0;
           }
 
+          let pandHandlers = null;
+          if (topFirstIndex === 0 && !card.finished) {
+            pandHandlers = panResponder.panHandlers;
+          }
+
           return (
             <Card
               key={card.quote}
               style={style}
               contentStyle={contentStyle}
-              panHandlers={
-                topFirstIndex === 0 ? panResponder.panHandlers : null
-              }
+              panHandlers={pandHandlers}
               {...card}
             />
           );

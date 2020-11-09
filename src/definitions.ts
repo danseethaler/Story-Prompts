@@ -31,6 +31,7 @@ export interface CardType {
   prompt: string;
   category: CategoryKeys;
   song?: true;
+  finished?: true;
 }
 
 export type ModalStackParamList = {
