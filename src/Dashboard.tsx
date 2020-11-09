@@ -3,16 +3,15 @@ import _ from 'lodash';
 import React, {useEffect, useRef, useState} from 'react';
 import {Animated, Text} from 'react-native';
 import {BothSafeArea, LinearButton} from 'wComponents';
+import {CARD_DRAG_RANGE, getShuffledCards} from 'wConfig';
 import {useAppContext, useGetColorsFromCards} from 'wHooks';
 import {CardType, ModalStackNavProps} from 'wTypes';
 import CardStack from './CardStack';
 import WContainer from './components/WContainer';
-import cardData from './config/cardData';
-import {CARD_DRAG_RANGE} from './config/constants';
 import {screenWidth} from './styled/sizing';
 import {useStyledTheme} from './styled/styled';
 
-const shuffledCards = _.shuffle(cardData);
+const shuffledCards = getShuffledCards();
 
 type Props = ModalStackNavProps<'Dashboard'>;
 

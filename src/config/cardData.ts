@@ -324,29 +324,29 @@ const cardData: CardType[] = [
     prompt: 'Share a story about ____________.',
     category: 'wild',
   },
-  {
-    quote: 'The lady doth protest too much, methinks.',
-    prompt: 'Share a story about ____________.',
-    category: 'wild',
-  },
-  {
-    quote:
-      'Never let a problem to be solved become more important than a person to be loved.',
-    prompt: 'Share a story about ____________.',
-    category: 'wild',
-  },
+  // {
+  //   quote: 'The lady doth protest too much, methinks.',
+  //   prompt: 'Share a story about ____________.',
+  //   category: 'wild',
+  // },
+  // {
+  //   quote:
+  //     'Never let a problem to be solved become more important than a person to be loved.',
+  //   prompt: 'Share a story about ____________.',
+  //   category: 'wild',
+  // },
   {
     quote:
       'The joy we feel has little to do with the circumstances of our lives and everything to do with the focus of our lives.',
     prompt: 'Share a story about ____________.',
     category: 'wild',
   },
-  {
-    quote:
-      'Stories are the one sure way to touch the heart and change the world.',
-    prompt: 'Share a story about ____________.',
-    category: 'wild',
-  },
+  // {
+  //   quote:
+  //     'Stories are the one sure way to touch the heart and change the world.',
+  //   prompt: 'Share a story about ____________.',
+  //   category: 'wild',
+  // },
   {
     quote:
       'All we have to decide is what to do with the time that is given to us.',

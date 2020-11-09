@@ -11,7 +11,7 @@ type Props = ModalStackNavProps<'Categories'>;
 
 const Categories: React.FC<Props> = ({navigation}) => {
   const theme = useStyledTheme();
-  const {filter, updateContext} = useAppContext();
+  const {updateContext} = useAppContext();
 
   return (
     <PartialModal closeModal={() => navigation.pop()}>
