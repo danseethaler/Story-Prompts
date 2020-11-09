@@ -71,31 +71,36 @@ const Card: React.FC<Props> = ({
         </LinearGradient>
       </WContainer>
 
-      {song ? (
-        <Ionicons
-          name="ios-musical-notes"
-          size={20}
-          color={theme.colors.text100}
-        />
-      ) : (
-        <FontAwesome name="quote-left" size={20} color={theme.colors.text100} />
-      )}
+      <WContainer align="center">
+        {song ? (
+          <Ionicons
+            name="ios-musical-notes"
+            size={20}
+            color={theme.colors.text100}
+          />
+        ) : (
+          <FontAwesome
+            name="quote-left"
+            size={20}
+            color={theme.colors.text100}
+          />
+        )}
 
-      <Text
-        style={{
-          fontWeight: '600',
-          letterSpacing: 1.4,
-          fontFamily: 'Avenir Next',
-          textAlign: 'center',
-          fontSize: 18,
-          color: theme.colors.white,
-        }}>
-        {quote}
-      </Text>
+        <Text
+          style={{
+            marginTop: 12,
+            fontWeight: '600',
+            fontFamily: 'Avenir Next',
+            textAlign: 'center',
+            fontSize: 24,
+            color: theme.colors.white,
+          }}>
+          {quote}
+        </Text>
+      </WContainer>
       <Text
         style={{
           fontWeight: '500',
-          letterSpacing: 1.4,
           fontFamily: 'Avenir Next',
           textAlign: 'center',
           fontSize: 18,
