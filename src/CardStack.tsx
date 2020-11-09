@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React, {useEffect, useRef, useState} from 'react';
 import {Animated, PanResponder, PanResponderGestureState} from 'react-native';
-import CardItem from './CardItem';
+import Card from './Card';
 import WContainer from './components/WContainer';
 import cardData from './config/cardData';
 import useAppContext from './hooks/useAppContext';
@@ -250,7 +250,7 @@ const CardStack: React.FC<Props> = () => {
           }
 
           return (
-            <CardItem
+            <Card
               key={card.quote}
               style={style}
               contentStyle={contentStyle}

@@ -1,21 +1,25 @@
 import {FontAwesome, Ionicons} from '@expo/vector-icons';
 import {LinearGradient} from 'expo-linear-gradient';
 import React from 'react';
-import {Animated, Text} from 'react-native';
-import WContainer from './components/WContainer';
+import {Animated, GestureResponderHandlers, Text} from 'react-native';
+import {WContainer} from 'wComponents';
+import {CardType} from 'wTypes';
 import {categories} from './config/cardData';
-import {CardType} from './definitions';
 import {useStyledTheme} from './styled/styled';
 
 interface Props extends CardType {
-  transforms: any;
+  panHandlers: GestureResponderHandlers | null;
+  style: any;
+  contentStyle: any;
 }
 
 const Card: React.FC<Props> = ({
-  quote,
+  panHandlers,
   prompt,
+  quote,
   category,
-  transforms,
+  style,
+  contentStyle,
   song = false,
 }) => {
   const theme = useStyledTheme();
@@ -23,82 +27,92 @@ const Card: React.FC<Props> = ({
   const categoryColorLight = theme.categoryColorsLight[category];
   const {title} = categories[category];
 
-  return (
-    <WContainer justify="space-between" align="center" stretch>
-      <Animated.View style={{transform: transforms}}>
-        <WContainer
-          align="center"
-          flex={1}
-          wPadding={[6, 3]}
-          justify="space-between"
-          stretch>
-          <WContainer
-            style={{
-              borderRadius: 22,
-              overflow: 'hidden',
-            }}>
-            <LinearGradient
-              colors={[categoryColor, categoryColorLight]}
-              start={{x: 0, y: 1}}
-              end={{x: 1, y: 1}}
-              style={{
-                paddingVertical: 4,
-                paddingHorizontal: 16,
-                backgroundColor: categoryColorLight,
-              }}>
-              <Text
-                style={{
-                  fontWeight: '600',
-                  letterSpacing: 1.4,
-                  fontFamily: 'Avenir Next',
-                  textAlign: 'center',
-                  fontSize: 18,
-                  color: theme.colors.white,
-                }}>
-                {title}
-              </Text>
-            </LinearGradient>
-          </WContainer>
+  const getMainCardStyle = (): any => {
+    return {
+      position: 'absolute',
+      alignSelf: 'center',
+      width: 320,
+      height: 460,
+      backgroundColor: '#39394C',
+      padding: 16,
+      borderRadius: 12,
+      ...style,
+    };
+  };
 
-          <WContainer stretch align="center" justify="center" wPadding={[3, 0]}>
-            {song ? (
-              <Ionicons
-                name="ios-musical-notes"
-                size={20}
-                color={theme.colors.text100}
-              />
-            ) : (
-              <FontAwesome
-                name="quote-left"
-                size={20}
-                color={theme.colors.text100}
-              />
-            )}
+  return (
+    <Animated.View style={getMainCardStyle()} {...panHandlers}>
+      <WContainer
+        flex={1}
+        align="center"
+        justify="space-around"
+        style={contentStyle}>
+        <WContainer
+          style={{
+            borderRadius: 22,
+            overflow: 'hidden',
+          }}>
+          <LinearGradient
+            colors={[categoryColor, categoryColorLight]}
+            start={{x: 0, y: 1}}
+            end={{x: 1, y: 1}}
+            style={{
+              paddingVertical: 4,
+              paddingHorizontal: 16,
+              backgroundColor: categoryColorLight,
+            }}>
             <Text
               style={{
+                fontWeight: '600',
+                letterSpacing: 1.4,
+                fontFamily: 'Avenir Next',
                 textAlign: 'center',
-                paddingVertical: theme.baseUnit * 3,
-                fontSize: 28,
+                fontSize: 18,
                 color: theme.colors.white,
-                lineHeight: 48,
               }}>
-              {quote}
+              {title}
             </Text>
-          </WContainer>
-
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 22,
-              fontFamily: 'Avenir Next',
-              fontWeight: '500',
-              color: categoryColorLight,
-            }}>
-            {prompt}
-          </Text>
+          </LinearGradient>
         </WContainer>
-      </Animated.View>
-    </WContainer>
+
+        {song ? (
+          <Ionicons
+            name="ios-musical-notes"
+            size={20}
+            color={theme.colors.text100}
+          />
+        ) : (
+          <FontAwesome
+            name="quote-left"
+            size={20}
+            color={theme.colors.text100}
+          />
+        )}
+
+        <Text
+          style={{
+            fontWeight: '600',
+            letterSpacing: 1.4,
+            fontFamily: 'Avenir Next',
+            textAlign: 'center',
+            fontSize: 18,
+            color: theme.colors.white,
+          }}>
+          {quote}
+        </Text>
+        <Text
+          style={{
+            fontWeight: '500',
+            letterSpacing: 1.4,
+            fontFamily: 'Avenir Next',
+            textAlign: 'center',
+            fontSize: 18,
+            color: theme.colors.white,
+          }}>
+          {prompt}
+        </Text>
+      </WContainer>
+    </Animated.View>
   );
 };
 
