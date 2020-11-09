@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React from 'react';
 import {Pressable} from 'react-native';
 import {screenWidth} from 'wStyled';
@@ -12,13 +11,8 @@ interface Props {
 
 const PartialModal = ({children, closeModal, height = 300}: Props) => (
   <WContainer flex={1} style={{height}}>
-    <Pressable
-      style={{flex: 1, justifyContent: 'flex-end'}}
-      onPress={closeModal}>
-      <Pressable style={{width: screenWidth}} onPress={_.noop}>
-        {children}
-      </Pressable>
-    </Pressable>
+    <Pressable style={{flex: 1, width: screenWidth}} onPress={closeModal} />
+    {children}
   </WContainer>
 );
 
