@@ -1,7 +1,7 @@
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import _ from 'lodash';
-import React, {useEffect, useRef, useState} from 'react';
-import {Animated, Text} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Text} from 'react-native';
 import {BothSafeArea, LinearButton} from 'wComponents';
 import {useAppContext, useGetColorsFromCards} from 'wHooks';
 import {ModalStackNavProps} from 'wTypes';
@@ -14,36 +14,35 @@ const shuffledCards = _.shuffle(cardData);
 
 type Props = ModalStackNavProps<'Dashboard'>;
 
-let firstRun = true;
-
 const Dashboard: React.FC<Props> = ({navigation}) => {
   const theme = useStyledTheme();
   const {filter} = useAppContext();
 
-  const [cards, setCards] = useState(shuffledCards);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const [storedCards, setStoredCards] = useState(shuffledCards);
 
   useEffect(() => {
-    if (firstRun) {
-      firstRun = false;
-      return;
-    }
+    setActiveIndex(0);
 
-    if (filter === null) {
-      setCards(shuffledCards);
-    } else {
-      setCards(_.filter(shuffledCards, {category: filter}));
-    }
+    const newStoredCards = _(shuffledCards)
+      .filter((card) => !filter || card.category === filter)
+      .value();
+
+    setStoredCards(newStoredCards);
   }, [filter]);
 
-  const [cardIndex, setCardIndex] = useState(0);
-  const [scrollUpdater, getColorsFromCards] = useGetColorsFromCards(cards);
-  const colors = getColorsFromCards(cardIndex);
+  const cards = _(storedCards)
+    .slice(activeIndex, activeIndex + 4)
+    .reverse()
+    .value();
 
-  const animatedPositionValue = useRef(new Animated.Value(0)).current;
-  const scrollPositionUpdater = Animated.event(
-    [{offset: animatedPositionValue}],
-    {useNativeDriver: false},
-  );
+  const [
+    offSetMoveHandler,
+    offsetValue,
+    getColorsFromCards,
+  ] = useGetColorsFromCards(cards);
+  const colors = getColorsFromCards();
 
   return (
     <BothSafeArea bottomColor="#1B1B24">
@@ -67,7 +66,12 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
           </LinearButton>
         </WContainer>
 
-        <CardStack />
+        <CardStack
+          cards={cards}
+          setActiveIndex={setActiveIndex}
+          offSetMoveHandler={offSetMoveHandler}
+          offsetValue={offsetValue}
+        />
 
         <WContainer align="center" stretch>
           <LinearButton
@@ -82,7 +86,8 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
             gradientColor1={colors[0]}
             gradientColor2={colors[1]}
             onPress={() => {
-              const nextIndex = cards[cardIndex + 1] ? cardIndex + 1 : 0;
+              const nextIndex = cards[activeIndex + 1] ? activeIndex + 1 : 0;
+              // TODO: Navigate to next card
             }}>
             <WContainer row align="center" justify="center">
               <Text

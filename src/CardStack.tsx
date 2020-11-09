@@ -1,46 +1,32 @@
 import _ from 'lodash';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Animated, PanResponder, PanResponderGestureState} from 'react-native';
+import {CARD_DRAG_RANGE} from 'wConfig';
+import {CardType} from 'wTypes';
 import Card from './Card';
 import WContainer from './components/WContainer';
-import cardData from './config/cardData';
-import useAppContext from './hooks/useAppContext';
 import {screenHeight, screenWidth} from './styled/sizing';
 
-interface Props {}
+interface Props {
+  cards: CardType[];
+  setActiveIndex: React.Dispatch<React.SetStateAction<number>>;
+  offsetValue: Animated.Value;
+  offSetMoveHandler: (e: PanResponderGestureState) => void;
+}
 
-const shuffledCards = _.shuffle(cardData);
-
-const CardStack: React.FC<Props> = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const {filter} = useAppContext();
-
-  useEffect(() => {
-    setActiveIndex(0);
-  }, [filter]);
-
-  const cards = _(shuffledCards)
-    // .filter((card) => !filter || card.category === filter)
-    .slice(activeIndex, activeIndex + 4)
-    .reverse()
-    .value();
-
+const CardStack: React.FC<Props> = ({
+  cards,
+  setActiveIndex,
+  offSetMoveHandler,
+  offsetValue,
+}) => {
   const handleRemove = () => setActiveIndex((activeIndex) => activeIndex + 1);
 
   const pan = useRef(new Animated.ValueXY()).current;
-  const offsetValue = useRef(new Animated.Value(0)).current;
 
   const panMoveHandler = Animated.event([null, {dx: pan.x, dy: pan.y}], {
     useNativeDriver: false,
   });
-
-  const offSetMoveHandler = (e: PanResponderGestureState) => {
-    const offset = Math.max(Math.abs(e.dx), Math.abs(e.dy));
-
-    return Animated.event([{offset: offsetValue}], {
-      useNativeDriver: false,
-    })({offset});
-  };
 
   const panResponder = useRef(
     PanResponder.create({
@@ -56,7 +42,7 @@ const CardStack: React.FC<Props> = () => {
       onPanResponderRelease: (e, {vx, vy}) => {
         const valueX = (pan.x as any)._value;
         const valueY = (pan.y as any)._value;
-        const offset = offsetValue._value;
+        const offset = (offsetValue as any)._value;
 
         // screenHeight is used here to get the number of pixels needed to
         // ensure we're moving the card all the way off the screen before it
@@ -82,7 +68,7 @@ const CardStack: React.FC<Props> = () => {
           }).start();
 
           Animated.timing(offsetValue, {
-            toValue: 250,
+            toValue: CARD_DRAG_RANGE,
             duration: exitDuration,
             useNativeDriver: false,
           }).start();
@@ -155,7 +141,6 @@ const CardStack: React.FC<Props> = () => {
           const contentStyle: any = {};
 
           const baseOffset = 65;
-          const xBounds = 250;
 
           if (isPrimaryCard) {
             style.top = -baseOffset;
@@ -165,7 +150,7 @@ const CardStack: React.FC<Props> = () => {
               {translateY: pan.y},
               {
                 rotate: pan.x.interpolate({
-                  inputRange: [-xBounds, 0, xBounds],
+                  inputRange: [-CARD_DRAG_RANGE, 0, CARD_DRAG_RANGE],
                   outputRange: ['-20deg', '0deg', '20deg'],
                   extrapolate: 'clamp',
                 }),
@@ -173,7 +158,7 @@ const CardStack: React.FC<Props> = () => {
             ];
 
             style.opacity = offsetValue.interpolate({
-              inputRange: [0, xBounds - 50, xBounds],
+              inputRange: [0, CARD_DRAG_RANGE - 50, CARD_DRAG_RANGE],
               outputRange: [1, 0.9, 0.5],
               extrapolate: 'clamp',
             });
@@ -181,7 +166,7 @@ const CardStack: React.FC<Props> = () => {
             style.transform = [
               {
                 scale: offsetValue.interpolate({
-                  inputRange: [0, xBounds],
+                  inputRange: [0, CARD_DRAG_RANGE],
                   outputRange: [0.85, 1],
                   extrapolate: 'clamp',
                 }),
@@ -189,13 +174,13 @@ const CardStack: React.FC<Props> = () => {
             ];
 
             style.top = offsetValue.interpolate({
-              inputRange: [0, xBounds],
+              inputRange: [0, CARD_DRAG_RANGE],
               outputRange: [0, -baseOffset],
               extrapolate: 'clamp',
             });
 
             style.opacity = offsetValue.interpolate({
-              inputRange: [0, xBounds],
+              inputRange: [0, CARD_DRAG_RANGE],
               outputRange: [0.5, 1],
               extrapolate: 'clamp',
             });
@@ -203,7 +188,7 @@ const CardStack: React.FC<Props> = () => {
             style.transform = [
               {
                 scale: offsetValue.interpolate({
-                  inputRange: [0, xBounds],
+                  inputRange: [0, CARD_DRAG_RANGE],
                   outputRange: [0.65, 0.85],
                   extrapolate: 'clamp',
                 }),
@@ -211,13 +196,13 @@ const CardStack: React.FC<Props> = () => {
             ];
 
             style.top = offsetValue.interpolate({
-              inputRange: [0, xBounds],
+              inputRange: [0, CARD_DRAG_RANGE],
               outputRange: [baseOffset, 0],
               extrapolate: 'clamp',
             });
 
             style.opacity = offsetValue.interpolate({
-              inputRange: [0, xBounds],
+              inputRange: [0, CARD_DRAG_RANGE],
               outputRange: [0.2, 0.5],
               extrapolate: 'clamp',
             });
@@ -227,7 +212,7 @@ const CardStack: React.FC<Props> = () => {
             style.transform = [
               {
                 scale: offsetValue.interpolate({
-                  inputRange: [0, xBounds],
+                  inputRange: [0, CARD_DRAG_RANGE],
                   outputRange: [0.5, 0.65],
                   extrapolate: 'clamp',
                 }),
@@ -235,13 +220,13 @@ const CardStack: React.FC<Props> = () => {
             ];
 
             style.top = offsetValue.interpolate({
-              inputRange: [0, xBounds],
+              inputRange: [0, CARD_DRAG_RANGE],
               outputRange: [baseOffset * 2, baseOffset],
               extrapolate: 'clamp',
             });
 
             style.opacity = offsetValue.interpolate({
-              inputRange: [0, xBounds],
+              inputRange: [0, CARD_DRAG_RANGE],
               outputRange: [0, 0.2],
               extrapolate: 'clamp',
             });
