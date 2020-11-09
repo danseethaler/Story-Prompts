@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, {useEffect, useRef} from 'react';
+import React, {useRef} from 'react';
 import {Animated, PanResponder, PanResponderGestureState} from 'react-native';
 import {CARD_DRAG_RANGE} from 'wConfig';
 import {CardType} from 'wTypes';
@@ -12,53 +12,51 @@ interface Props {
   setActiveIndex: React.Dispatch<React.SetStateAction<number>>;
   offsetValue: Animated.Value;
   offSetMoveHandler: (e: PanResponderGestureState) => void;
+  cardPanValue: Animated.ValueXY;
+  cardPanMoveHandler: (...args: any[]) => void;
 }
 
 const CardStack: React.FC<Props> = ({
   cards,
   setActiveIndex,
+  cardPanMoveHandler,
+  cardPanValue,
   offSetMoveHandler,
   offsetValue,
 }) => {
   const handleRemove = () => setActiveIndex((activeIndex) => activeIndex + 1);
-
-  const pan = useRef(new Animated.ValueXY()).current;
-
-  const panMoveHandler = Animated.event([null, {dx: pan.x, dy: pan.y}], {
-    useNativeDriver: false,
-  });
 
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponderCapture: () => true,
       onPanResponderGrant: (e, gestureState) => {
-        pan.setValue({x: 0, y: 0});
+        cardPanValue.setValue({x: 0, y: 0});
       },
       onPanResponderMove: (e, state) => {
-        panMoveHandler(e, state);
+        cardPanMoveHandler(e, state);
         offSetMoveHandler(state);
       },
       onPanResponderRelease: (e, {vx, vy}) => {
-        const valueX = (pan.x as any)._value;
-        const valueY = (pan.y as any)._value;
-        const offset = (offsetValue as any)._value;
-
-        // screenHeight is used here to get the number of pixels needed to
-        // ensure we're moving the card all the way off the screen before it
-        // disappears
-        const xMultiplier = Math.abs(screenHeight / valueX);
-        const yMultiplier = Math.abs(screenHeight / valueY);
-        const multiplier = Math.min(xMultiplier, yMultiplier);
-
         const offsetThreshold = 75;
 
+        const offset = (offsetValue as any)._value;
         if (offset > offsetThreshold) {
           // This is the number of ms after the user releases the card that it
           // floats of the screen and the card is removed from the stack
           const exitDuration = 300;
 
-          Animated.timing(pan, {
+          const valueX = (cardPanValue.x as any)._value;
+          const valueY = (cardPanValue.y as any)._value;
+
+          // screenHeight is used here to get the number of pixels needed to
+          // ensure we're moving the card all the way off the screen before it
+          // disappears
+          const xMultiplier = Math.abs(screenHeight / valueX);
+          const yMultiplier = Math.abs(screenHeight / valueY);
+          const multiplier = Math.min(xMultiplier, yMultiplier);
+
+          Animated.timing(cardPanValue, {
             toValue: {
               x: valueX * multiplier,
               y: valueY * multiplier,
@@ -74,7 +72,7 @@ const CardStack: React.FC<Props> = ({
           }).start();
 
           setTimeout(() => {
-            Animated.timing(pan, {
+            Animated.timing(cardPanValue, {
               toValue: 0,
               duration: 0,
               useNativeDriver: false,
@@ -89,7 +87,7 @@ const CardStack: React.FC<Props> = ({
             handleRemove();
           }, exitDuration);
         } else {
-          Animated.spring(pan, {
+          Animated.spring(cardPanValue, {
             toValue: 0,
             useNativeDriver: false,
           }).start();
@@ -102,14 +100,6 @@ const CardStack: React.FC<Props> = ({
       },
     }),
   ).current;
-
-  useEffect(() => {
-    return () => {
-      pan.x.removeAllListeners();
-      pan.y.removeAllListeners();
-      offsetValue.removeAllListeners();
-    };
-  }, []);
 
   const width = Math.min(screenWidth - 80, 300);
 
@@ -145,10 +135,10 @@ const CardStack: React.FC<Props> = ({
             style.top = -baseOffset;
 
             style.transform = [
-              {translateX: pan.x},
-              {translateY: pan.y},
+              {translateX: cardPanValue.x},
+              {translateY: cardPanValue.y},
               {
-                rotate: pan.x.interpolate({
+                rotate: cardPanValue.x.interpolate({
                   inputRange: [-CARD_DRAG_RANGE, 0, CARD_DRAG_RANGE],
                   outputRange: ['-20deg', '0deg', '20deg'],
                   extrapolate: 'clamp',

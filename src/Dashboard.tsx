@@ -1,13 +1,15 @@
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import _ from 'lodash';
-import React, {useEffect, useState} from 'react';
-import {Text} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Animated, Text} from 'react-native';
 import {BothSafeArea, LinearButton} from 'wComponents';
 import {useAppContext, useGetColorsFromCards} from 'wHooks';
 import {CardType, ModalStackNavProps} from 'wTypes';
 import CardStack from './CardStack';
 import WContainer from './components/WContainer';
 import cardData from './config/cardData';
+import {CARD_DRAG_RANGE} from './config/constants';
+import {screenWidth} from './styled/sizing';
 import {useStyledTheme} from './styled/styled';
 
 const shuffledCards = _.shuffle(cardData);
@@ -55,6 +57,22 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
   ] = useGetColorsFromCards(cards);
   const colors = getColorsFromCards();
 
+  const cardPanValue = useRef(new Animated.ValueXY()).current;
+  const cardPanMoveHandler = Animated.event(
+    [null, {dx: cardPanValue.x, dy: cardPanValue.y}],
+    {
+      useNativeDriver: false,
+    },
+  );
+
+  useEffect(() => {
+    return () => {
+      cardPanValue.x.removeAllListeners();
+      cardPanValue.y.removeAllListeners();
+      offsetValue.removeAllListeners();
+    };
+  }, []);
+
   return (
     <BothSafeArea bottomColor="#1B1B24">
       <WContainer flex={1} stretch wPadding={[3, 0]}>
@@ -82,6 +100,8 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
           setActiveIndex={setActiveIndex}
           offSetMoveHandler={offSetMoveHandler}
           offsetValue={offsetValue}
+          cardPanMoveHandler={cardPanMoveHandler}
+          cardPanValue={cardPanValue}
         />
 
         <WContainer align="center" stretch>
@@ -94,11 +114,44 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
               paddingHorizontal: 100,
               paddingVertical: 14,
             }}
+            disabled={cards.length === 1}
             gradientColor1={colors[0]}
             gradientColor2={colors[1]}
             onPress={() => {
-              const nextIndex = cards[activeIndex + 1] ? activeIndex + 1 : 0;
-              // TODO: Navigate to next card
+              // This is the number of ms after the user releases the card that it
+              // floats of the screen and the card is removed from the stack
+              const exitDuration = 300;
+
+              Animated.timing(cardPanValue, {
+                toValue: {
+                  x: -(screenWidth + 100),
+                  y: 0,
+                },
+                duration: exitDuration,
+                useNativeDriver: false,
+              }).start();
+
+              Animated.timing(offsetValue, {
+                toValue: CARD_DRAG_RANGE,
+                duration: exitDuration,
+                useNativeDriver: false,
+              }).start();
+
+              setTimeout(() => {
+                Animated.timing(cardPanValue, {
+                  toValue: 0,
+                  duration: 0,
+                  useNativeDriver: false,
+                }).start();
+
+                Animated.timing(offsetValue, {
+                  toValue: 0,
+                  duration: 0,
+                  useNativeDriver: false,
+                }).start();
+
+                setActiveIndex((activeIndex) => activeIndex + 1);
+              }, exitDuration);
             }}>
             <WContainer row align="center" justify="center">
               <Text
