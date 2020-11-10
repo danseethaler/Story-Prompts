@@ -1,9 +1,12 @@
+import * as Haptics from 'expo-haptics';
 import _ from 'lodash';
 import {useRef} from 'react';
 import {Animated, PanResponderGestureState} from 'react-native';
 import {CARD_DRAG_RANGE} from 'wConfig';
 import {useStyledTheme} from 'wStyled';
 import {CardType} from 'wTypes';
+
+let previousOffset = 0;
 
 const useGetColorsFromCards = (
   cards: CardType[],
@@ -18,6 +21,11 @@ const useGetColorsFromCards = (
 
   const offSetMoveHandler = (e: PanResponderGestureState) => {
     const offset = Math.max(Math.abs(e.dx), Math.abs(e.dy));
+
+    if (previousOffset < 75 && offset > 75) {
+      Haptics.selectionAsync();
+    }
+    previousOffset = offset;
 
     return Animated.event([{offset: offsetValue}], {
       useNativeDriver: false,

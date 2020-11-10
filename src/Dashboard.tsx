@@ -1,4 +1,5 @@
 import {MaterialCommunityIcons} from '@expo/vector-icons';
+import * as Haptics from 'expo-haptics';
 import _ from 'lodash';
 import React, {useEffect, useRef, useState} from 'react';
 import {Animated, Text} from 'react-native';
@@ -130,6 +131,8 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
               gradientColor1={colors[0]}
               gradientColor2={colors[1]}
               onPress={() => {
+                Haptics.selectionAsync();
+
                 // This is the number of ms after the user releases the card that it
                 // floats of the screen and the card is removed from the stack
                 const exitDuration = 300;
