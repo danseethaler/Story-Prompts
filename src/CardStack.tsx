@@ -173,6 +173,12 @@ const CardStack: React.FC<Props> = ({
               outputRange: [0.5, 1],
               extrapolate: 'clamp',
             });
+
+            contentStyle.opacity = offsetValue.interpolate({
+              inputRange: [0, CARD_DRAG_RANGE],
+              outputRange: [0, 1],
+              extrapolate: 'clamp',
+            });
           } else if (isThirdCard) {
             style.transform = [
               {
@@ -223,9 +229,9 @@ const CardStack: React.FC<Props> = ({
             contentStyle.opacity = 0;
           }
 
-          let pandHandlers = null;
+          let panHandlers = null;
           if (topFirstIndex === 0 && !card.finished) {
-            pandHandlers = panResponder.panHandlers;
+            panHandlers = panResponder.panHandlers;
           }
 
           return (
@@ -233,7 +239,7 @@ const CardStack: React.FC<Props> = ({
               key={card.quote}
               style={style}
               contentStyle={contentStyle}
-              panHandlers={pandHandlers}
+              panHandlers={panHandlers}
               {...card}
             />
           );

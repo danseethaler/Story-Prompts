@@ -72,6 +72,17 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
     };
   }, []);
 
+  let nextButtonOpacity: Number | Animated.AnimatedInterpolation = 1;
+  if (cards.length === 2) {
+    nextButtonOpacity = offsetValue.interpolate({
+      inputRange: [0, CARD_DRAG_RANGE],
+      outputRange: [1, 0],
+      extrapolate: 'clamp',
+    });
+  } else if (cards.length === 1) {
+    nextButtonOpacity = 0;
+  }
+
   return (
     <BothSafeArea bottomColor="#1B1B24">
       <WContainer flex={1} stretch wPadding={[3, 0]}>
@@ -104,72 +115,75 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
         />
 
         <WContainer align="center" stretch>
-          <LinearButton
-            viewStyle={{
-              borderRadius: 40,
-              overflow: 'hidden',
-            }}
-            touchStyle={{
-              paddingHorizontal: 100,
-              paddingVertical: 14,
-            }}
-            disabled={cards.length === 1}
-            gradientColor1={colors[0]}
-            gradientColor2={colors[1]}
-            onPress={() => {
-              // This is the number of ms after the user releases the card that it
-              // floats of the screen and the card is removed from the stack
-              const exitDuration = 300;
+          <Animated.View style={{opacity: nextButtonOpacity}}>
+            <LinearButton
+              viewStyle={{
+                borderRadius: 40,
+                overflow: 'hidden',
+                opacity: cards.length === 1 ? 0 : 1,
+              }}
+              touchStyle={{
+                paddingHorizontal: 100,
+                paddingVertical: 14,
+              }}
+              disabled={cards.length === 1}
+              gradientColor1={colors[0]}
+              gradientColor2={colors[1]}
+              onPress={() => {
+                // This is the number of ms after the user releases the card that it
+                // floats of the screen and the card is removed from the stack
+                const exitDuration = 300;
 
-              Animated.timing(cardPanValue, {
-                toValue: {
-                  x: -(screenWidth + 100),
-                  y: 0,
-                },
-                duration: exitDuration,
-                useNativeDriver: false,
-              }).start();
-
-              Animated.timing(offsetValue, {
-                toValue: CARD_DRAG_RANGE,
-                duration: exitDuration,
-                useNativeDriver: false,
-              }).start();
-
-              setTimeout(() => {
                 Animated.timing(cardPanValue, {
-                  toValue: 0,
-                  duration: 0,
+                  toValue: {
+                    x: -(screenWidth + 100),
+                    y: 0,
+                  },
+                  duration: exitDuration,
                   useNativeDriver: false,
                 }).start();
 
                 Animated.timing(offsetValue, {
-                  toValue: 0,
-                  duration: 0,
+                  toValue: CARD_DRAG_RANGE,
+                  duration: exitDuration,
                   useNativeDriver: false,
                 }).start();
 
-                setActiveIndex((activeIndex) => activeIndex + 1);
-              }, exitDuration);
-            }}>
-            <WContainer row align="center" justify="center">
-              <Text
-                style={{
-                  fontSize: 26,
-                  color: theme.colors.white,
-                  fontFamily: 'Avenir Next',
-                  fontWeight: '600',
-                }}>
-                Next
-              </Text>
-              <MaterialCommunityIcons
-                name="arrow-right"
-                size={28}
-                style={{marginLeft: theme.baseUnit * 1.5}}
-                color={theme.colors.white}
-              />
-            </WContainer>
-          </LinearButton>
+                setTimeout(() => {
+                  Animated.timing(cardPanValue, {
+                    toValue: 0,
+                    duration: 0,
+                    useNativeDriver: false,
+                  }).start();
+
+                  Animated.timing(offsetValue, {
+                    toValue: 0,
+                    duration: 0,
+                    useNativeDriver: false,
+                  }).start();
+
+                  setActiveIndex((activeIndex) => activeIndex + 1);
+                }, exitDuration);
+              }}>
+              <WContainer row align="center" justify="center">
+                <Text
+                  style={{
+                    fontSize: 26,
+                    color: theme.colors.white,
+                    fontFamily: 'Avenir Next',
+                    fontWeight: '600',
+                  }}>
+                  Next
+                </Text>
+                <MaterialCommunityIcons
+                  name="arrow-right"
+                  size={28}
+                  style={{marginLeft: theme.baseUnit * 1.5}}
+                  color={theme.colors.white}
+                />
+              </WContainer>
+            </LinearButton>
+          </Animated.View>
         </WContainer>
       </WContainer>
     </BothSafeArea>
