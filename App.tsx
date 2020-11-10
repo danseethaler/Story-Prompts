@@ -8,7 +8,10 @@ import {AppContextType, AppState} from 'wTypes';
 import ModalStack from './src/ModalStack';
 
 const App: React.FC = () => {
-  const [state, updateState] = useState<AppState>({filter: null});
+  const [state, updateState] = useState<AppState>({
+    filter: null,
+    filterVersion: Date.now(),
+  });
 
   const setState = (updates: Partial<AppContextType>) =>
     updateState((prevState) => ({...prevState, ...updates}));

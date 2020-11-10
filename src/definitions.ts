@@ -3,6 +3,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 
 export interface AppState {
   filter: null | CategoryKeys;
+  filterVersion: number;
 }
 
 export interface AppContextType extends AppState {

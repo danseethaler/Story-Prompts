@@ -44,7 +44,10 @@ const Categories: React.FC<Props> = ({navigation}) => {
                 key={category.key}
                 category={category}
                 onPress={() => {
-                  updateContext({filter: category.key});
+                  updateContext({
+                    filter: category.key,
+                    filterVersion: Date.now(),
+                  });
                   navigation.pop();
                 }}
               />
@@ -58,7 +61,7 @@ const Categories: React.FC<Props> = ({navigation}) => {
               margin: theme.baseUnit * 2,
             }}
             onPress={() => {
-              updateContext({filter: null});
+              updateContext({filter: null, filterVersion: Date.now()});
               navigation.pop();
             }}>
             <Text

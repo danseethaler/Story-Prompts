@@ -17,7 +17,7 @@ type Props = ModalStackNavProps<'Dashboard'>;
 
 const Dashboard: React.FC<Props> = ({navigation}) => {
   const theme = useStyledTheme();
-  const {filter} = useAppContext();
+  const {filter, filterVersion} = useAppContext();
 
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -31,7 +31,7 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
       .value();
 
     setStoredCards(newStoredCards);
-  }, [filter]);
+  }, [filter, filterVersion]);
 
   const cards = _(storedCards)
     .slice(activeIndex, activeIndex + 4)
