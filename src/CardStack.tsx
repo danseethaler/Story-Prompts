@@ -110,6 +110,7 @@ const CardStack: React.FC<Props> = ({
       align="center"
       style={{
         width: screenWidth,
+        alignSelf: 'center',
       }}>
       <WContainer
         style={{
