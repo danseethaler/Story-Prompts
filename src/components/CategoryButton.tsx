@@ -20,7 +20,7 @@ const CategoryButton: React.FC<Props> = ({category, onPress}) => {
         end={{x: 1, y: 1}}
         style={{
           borderRadius: 10,
-          width: screenWidth / 2 - 32,
+          width: Math.min(screenWidth, 500) / 2 - 32,
           marginHorizontal: 8,
           alignItems: 'center',
           marginVertical: 8,

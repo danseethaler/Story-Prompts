@@ -20,7 +20,12 @@ const Categories: React.FC<Props> = ({navigation}) => {
         justify="center"
         stretch
         wPadding={[0, 2]}
-        style={{borderRadius: 40, backgroundColor: '#1B1B24'}}>
+        style={{
+          alignSelf: 'center',
+          maxWidth: 500,
+          borderRadius: 40,
+          backgroundColor: '#1B1B24',
+        }}>
         <WContainer
           wPadding={0.5}
           wMargin={2}
