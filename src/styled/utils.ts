@@ -30,3 +30,35 @@ export const getDisplayDimensionsFromImageSource = (
     height: viewHeight,
   };
 };
+
+// This approach comes from this article
+// https://medium.com/@zubryjs/squircles-bringing-ios-7s-solution-to-rounded-rectangles-to-css-9fc35779aa65
+export const getClipPathForCornerCircle = (size: number) => {
+  const SQUIRCLE_SIZE = size / 2;
+
+  const squircle = (radius: number) => (theta: number) => ({
+    x:
+      Math.pow(Math.abs(Math.cos(theta)), 2 / radius) *
+        SQUIRCLE_SIZE *
+        Math.sign(Math.cos(theta)) +
+      SQUIRCLE_SIZE,
+    y:
+      Math.pow(Math.abs(Math.sin(theta)), 2 / radius) *
+        SQUIRCLE_SIZE *
+        Math.sign(Math.sin(theta)) +
+      SQUIRCLE_SIZE,
+  });
+
+  const toRadians = (deg: number) => (deg * Math.PI) / 180;
+
+  const cornerValues = new Array(360)
+    .fill(0)
+    .map((x, i) => i)
+    .map(toRadians)
+    .map(squircle(4)) // Border-radius of 4
+    .map(({x, y}) => ({x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10})) // Round to the ones place
+    .map(({x, y}) => `${x} ${y}`)
+    .join(', ');
+
+  return cornerValues;
+};

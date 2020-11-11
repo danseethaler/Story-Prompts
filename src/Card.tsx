@@ -106,8 +106,6 @@ const Card: React.FC<Props> = ({
         )}
 
         <Text
-          adjustsFontSizeToFit
-          numberOfLines={10}
           style={{
             marginTop: 12,
             fontWeight: '600',

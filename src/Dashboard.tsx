@@ -3,12 +3,11 @@ import * as Haptics from 'expo-haptics';
 import _ from 'lodash';
 import React, {useEffect, useRef, useState} from 'react';
 import {Animated, Text} from 'react-native';
-import {BothSafeArea, LinearButton} from 'wComponents';
+import {BothSafeArea, LinearButton, WContainer} from 'wComponents';
 import {CARD_DRAG_RANGE, getShuffledCards} from 'wConfig';
 import {useAppContext, useGetColorsFromCards} from 'wHooks';
 import {CardType, ModalStackNavProps} from 'wTypes';
 import CardStack from './CardStack';
-import WContainer from './components/WContainer';
 import {screenWidth} from './styled/sizing';
 import {useStyledTheme} from './styled/styled';
 
@@ -116,7 +115,7 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
         />
 
         <WContainer align="center" stretch>
-          <Animated.View style={{opacity: nextButtonOpacity}}>
+          <Animated.View style={{opacity: nextButtonOpacity} as any}>
             <LinearButton
               viewStyle={{
                 borderRadius: 40,
