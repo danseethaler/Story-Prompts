@@ -17,7 +17,7 @@ import {
 import {captureRef, releaseCapture} from 'react-native-view-shot';
 import {LinearButton, WContainer} from 'wComponents';
 import {APP_STORE_URL, categories} from 'wConfig';
-import {useStyledTheme} from 'wStyled';
+import {screenHeight, screenWidth, useStyledTheme} from 'wStyled';
 import {CardType, ModalStackNavigation} from 'wTypes';
 
 interface Props extends CardType {
@@ -46,11 +46,14 @@ const Card: React.FC<Props> = ({
   const [isCapturing, setIsCapturing] = useState(false);
 
   const getMainCardStyle = (): any => {
+    const width = Math.min(screenWidth * 0.9, 320);
+    const height = Math.min(width * 1.5, screenHeight - 300);
+
     return {
       position: 'absolute',
       alignSelf: 'center',
-      width: 320,
-      height: 460,
+      width,
+      height,
       backgroundColor: '#39394C',
       padding: 16,
       borderRadius: 12,
@@ -103,6 +106,8 @@ const Card: React.FC<Props> = ({
         )}
 
         <Text
+          adjustsFontSizeToFit
+          numberOfLines={10}
           style={{
             marginTop: 12,
             fontWeight: '600',
@@ -126,6 +131,7 @@ const Card: React.FC<Props> = ({
       </Text>
     </>
   );
+
   if (finished) {
     content = (
       <WContainer flex={1} align="center" stretch justify="space-around">
@@ -228,7 +234,7 @@ const Card: React.FC<Props> = ({
             </Text>
             <MaterialCommunityIcons
               name="cards"
-              size={30}
+              size={26}
               color={theme.colors.white}
             />
           </WContainer>

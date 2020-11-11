@@ -5,7 +5,7 @@ import {CARD_DRAG_RANGE} from 'wConfig';
 import {CardType} from 'wTypes';
 import Card from './Card';
 import WContainer from './components/WContainer';
-import {screenHeight, screenWidth} from './styled/sizing';
+import {screenHeight} from './styled/sizing';
 
 interface Props {
   cards: CardType[];
@@ -101,151 +101,136 @@ const CardStack: React.FC<Props> = ({
     }),
   ).current;
 
-  const width = Math.min(screenWidth - 80, 300);
-
   return (
-    <WContainer
-      flex={1}
-      justify="center"
-      align="center"
-      style={{
-        width: screenWidth,
-        alignSelf: 'center',
-      }}>
-      <WContainer
-        style={{
-          width,
-          height: width * 1.3,
-        }}>
-        {_.map(cards, (card, index) => {
-          const topFirstIndex = cards.length - index - 1;
-          const isPrimaryCard = topFirstIndex === 0;
-          const isSecondCard = topFirstIndex === 1;
-          const isThirdCard = topFirstIndex === 2;
-          const isFourthCard = topFirstIndex === 3;
+    <WContainer flex={1} wMarginTop={4} stretch>
+      {_.map(cards, (card, index) => {
+        const topFirstIndex = cards.length - index - 1;
+        const isPrimaryCard = topFirstIndex === 0;
+        const isSecondCard = topFirstIndex === 1;
+        const isThirdCard = topFirstIndex === 2;
+        const isFourthCard = topFirstIndex === 3;
 
-          const style: any = {
-            opacity: 1,
-          };
+        const style: any = {
+          opacity: 1,
+        };
 
-          const contentStyle: any = {};
+        const contentStyle: any = {};
 
-          const baseOffset = 65;
+        const baseOffset = 65;
 
-          if (isPrimaryCard) {
-            style.top = -baseOffset;
+        if (isPrimaryCard) {
+          style.top = 0;
 
-            style.transform = [
-              {translateX: cardPanValue.x},
-              {translateY: cardPanValue.y},
-              {
-                rotate: cardPanValue.x.interpolate({
-                  inputRange: [-CARD_DRAG_RANGE, 0, CARD_DRAG_RANGE],
-                  outputRange: ['-20deg', '0deg', '20deg'],
-                  extrapolate: 'clamp',
-                }),
-              },
-            ];
+          style.transform = [
+            {translateX: cardPanValue.x},
+            {translateY: cardPanValue.y},
+            {
+              rotate: cardPanValue.x.interpolate({
+                inputRange: [-CARD_DRAG_RANGE, 0, CARD_DRAG_RANGE],
+                outputRange: ['-20deg', '0deg', '20deg'],
+                extrapolate: 'clamp',
+              }),
+            },
+          ];
 
-            style.opacity = offsetValue.interpolate({
-              inputRange: [0, CARD_DRAG_RANGE - 50, CARD_DRAG_RANGE],
-              outputRange: [1, 0.9, 0.5],
-              extrapolate: 'clamp',
-            });
-          } else if (isSecondCard) {
-            style.transform = [
-              {
-                scale: offsetValue.interpolate({
-                  inputRange: [0, CARD_DRAG_RANGE],
-                  outputRange: [0.85, 1],
-                  extrapolate: 'clamp',
-                }),
-              },
-            ];
+          style.opacity = offsetValue.interpolate({
+            inputRange: [0, CARD_DRAG_RANGE - 50, CARD_DRAG_RANGE],
+            outputRange: [1, 0.9, 0.5],
+            extrapolate: 'clamp',
+          });
+        } else if (isSecondCard) {
+          style.transform = [
+            {
+              scale: offsetValue.interpolate({
+                inputRange: [0, CARD_DRAG_RANGE],
+                outputRange: [0.85, 1],
+                extrapolate: 'clamp',
+              }),
+            },
+          ];
 
-            style.top = offsetValue.interpolate({
-              inputRange: [0, CARD_DRAG_RANGE],
-              outputRange: [0, -baseOffset],
-              extrapolate: 'clamp',
-            });
+          style.top = offsetValue.interpolate({
+            inputRange: [0, CARD_DRAG_RANGE],
+            outputRange: [baseOffset, 0],
+            extrapolate: 'clamp',
+          });
 
-            style.opacity = offsetValue.interpolate({
-              inputRange: [0, CARD_DRAG_RANGE],
-              outputRange: [0.5, 1],
-              extrapolate: 'clamp',
-            });
+          style.opacity = offsetValue.interpolate({
+            inputRange: [0, CARD_DRAG_RANGE],
+            outputRange: [0.5, 1],
+            extrapolate: 'clamp',
+          });
 
-            contentStyle.opacity = offsetValue.interpolate({
-              inputRange: [0, CARD_DRAG_RANGE],
-              outputRange: [0, 1],
-              extrapolate: 'clamp',
-            });
-          } else if (isThirdCard) {
-            style.transform = [
-              {
-                scale: offsetValue.interpolate({
-                  inputRange: [0, CARD_DRAG_RANGE],
-                  outputRange: [0.65, 0.85],
-                  extrapolate: 'clamp',
-                }),
-              },
-            ];
+          contentStyle.opacity = offsetValue.interpolate({
+            inputRange: [0, CARD_DRAG_RANGE],
+            outputRange: [0, 1],
+            extrapolate: 'clamp',
+          });
+        } else if (isThirdCard) {
+          style.transform = [
+            {
+              scale: offsetValue.interpolate({
+                inputRange: [0, CARD_DRAG_RANGE],
+                outputRange: [0.65, 0.85],
+                extrapolate: 'clamp',
+              }),
+            },
+          ];
 
-            style.top = offsetValue.interpolate({
-              inputRange: [0, CARD_DRAG_RANGE],
-              outputRange: [baseOffset, 0],
-              extrapolate: 'clamp',
-            });
+          style.top = offsetValue.interpolate({
+            inputRange: [0, CARD_DRAG_RANGE],
+            outputRange: [baseOffset * 2, baseOffset],
+            extrapolate: 'clamp',
+          });
 
-            style.opacity = offsetValue.interpolate({
-              inputRange: [0, CARD_DRAG_RANGE],
-              outputRange: [0.2, 0.5],
-              extrapolate: 'clamp',
-            });
+          style.opacity = offsetValue.interpolate({
+            inputRange: [0, CARD_DRAG_RANGE],
+            outputRange: [0.2, 0.5],
+            extrapolate: 'clamp',
+          });
 
-            contentStyle.opacity = 0;
-          } else if (isFourthCard) {
-            style.transform = [
-              {
-                scale: offsetValue.interpolate({
-                  inputRange: [0, CARD_DRAG_RANGE],
-                  outputRange: [0.5, 0.65],
-                  extrapolate: 'clamp',
-                }),
-              },
-            ];
+          contentStyle.opacity = 0;
+        } else if (isFourthCard) {
+          style.transform = [
+            {
+              scale: offsetValue.interpolate({
+                inputRange: [0, CARD_DRAG_RANGE],
+                outputRange: [0.5, 0.65],
+                extrapolate: 'clamp',
+              }),
+            },
+          ];
 
-            style.top = offsetValue.interpolate({
-              inputRange: [0, CARD_DRAG_RANGE],
-              outputRange: [baseOffset * 2, baseOffset],
-              extrapolate: 'clamp',
-            });
+          style.top = offsetValue.interpolate({
+            inputRange: [0, CARD_DRAG_RANGE],
+            outputRange: [baseOffset * 3, baseOffset * 2],
+            extrapolate: 'clamp',
+          });
 
-            style.opacity = offsetValue.interpolate({
-              inputRange: [0, CARD_DRAG_RANGE],
-              outputRange: [0, 0.2],
-              extrapolate: 'clamp',
-            });
+          style.opacity = offsetValue.interpolate({
+            inputRange: [0, CARD_DRAG_RANGE],
+            outputRange: [0, 0.2],
+            extrapolate: 'clamp',
+          });
 
-            contentStyle.opacity = 0;
-          }
+          contentStyle.opacity = 0;
+        }
 
-          let panHandlers = null;
-          if (topFirstIndex === 0 && !card.finished) {
-            panHandlers = panResponder.panHandlers;
-          }
+        let panHandlers = null;
+        if (topFirstIndex === 0 && !card.finished) {
+          panHandlers = panResponder.panHandlers;
+        }
 
-          return (
-            <Card
-              key={card.quote}
-              style={style}
-              contentStyle={contentStyle}
-              panHandlers={panHandlers}
-              {...card}
-            />
-          );
-        })}
-      </WContainer>
+        return (
+          <Card
+            key={card.quote}
+            style={style}
+            contentStyle={contentStyle}
+            panHandlers={panHandlers}
+            {...card}
+          />
+        );
+      })}
     </WContainer>
   );
 };
