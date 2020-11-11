@@ -6,8 +6,15 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import Constants from 'expo-constants';
 import {LinearGradient} from 'expo-linear-gradient';
-import React from 'react';
-import {Animated, GestureResponderHandlers, Share, Text} from 'react-native';
+import React, {useRef, useState} from 'react';
+import {
+  Animated,
+  GestureResponderHandlers,
+  Pressable,
+  Share,
+  Text,
+} from 'react-native';
+import {captureRef, releaseCapture} from 'react-native-view-shot';
 import {LinearButton, WContainer} from 'wComponents';
 import {APP_STORE_URL, categories} from 'wConfig';
 import {useStyledTheme} from 'wStyled';
@@ -34,6 +41,9 @@ const Card: React.FC<Props> = ({
   const categoryColor = theme.categoryColors[category];
   const categoryColorLight = theme.categoryColorsLight[category];
   const {title} = categories[category];
+
+  const cardRef = useRef();
+  const [isCapturing, setIsCapturing] = useState(false);
 
   const getMainCardStyle = (): any => {
     return {
@@ -228,12 +238,42 @@ const Card: React.FC<Props> = ({
   }
 
   return (
-    <Animated.View style={getMainCardStyle()} {...panHandlers}>
+    <Animated.View ref={cardRef} style={getMainCardStyle()} {...panHandlers}>
       <Animated.View style={{flex: 1, ...contentStyle}}>
         <WContainer flex={1} align="center" justify="space-around">
           {content}
         </WContainer>
       </Animated.View>
+
+      {!finished && !isCapturing && (
+        <Pressable
+          style={{position: 'absolute', top: 12, right: 12}}
+          onPress={async () => {
+            // Hide the share icon before capturing a screenshot
+            setIsCapturing(true);
+
+            // Move the captureRef to the nextTick to allow a render cycle
+            setTimeout(async () => {
+              const fileUrl = await captureRef(cardRef, {
+                result: 'tmpfile',
+                quality: 1,
+                format: 'png',
+              });
+
+              setIsCapturing(false);
+
+              Share.share({
+                url: fileUrl,
+              }).finally(() => releaseCapture(fileUrl));
+            });
+          }}>
+          <MaterialCommunityIcons
+            name="share"
+            size={26}
+            color={theme.colors.background250}
+          />
+        </Pressable>
+      )}
     </Animated.View>
   );
 };
