@@ -247,6 +247,7 @@ const Card: React.FC<Props> = ({
 
       {!finished && !isCapturing && (
         <Pressable
+          hitSlop={16}
           style={{position: 'absolute', top: 12, right: 12}}
           onPress={async () => {
             // Hide the share icon before capturing a screenshot
