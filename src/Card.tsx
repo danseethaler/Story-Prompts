@@ -31,6 +31,7 @@ const Card: React.FC<Props> = ({
   prompt,
   quote,
   category,
+  source,
   style,
   contentStyle,
   finished = false,
@@ -116,7 +117,20 @@ const Card: React.FC<Props> = ({
           }}>
           {quote}
         </Text>
+
+        <Text
+          style={{
+            marginTop: 12,
+            fontWeight: '500',
+            fontFamily: 'Avenir Next',
+            textAlign: 'center',
+            fontSize: 18,
+            color: theme.colors.white,
+          }}>
+          - {source}
+        </Text>
       </WContainer>
+
       <Text
         style={{
           fontWeight: '500',

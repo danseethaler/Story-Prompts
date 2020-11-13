@@ -42,6 +42,7 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
     cards.unshift({
       prompt: '',
       quote: '',
+      source: '',
       // Use the most recent card category - this will make the color stay the
       // same between the second to last category and the last category
       category: (_.last(storedCards) as CardType).category,

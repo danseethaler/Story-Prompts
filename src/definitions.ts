@@ -30,6 +30,7 @@ export interface CategoryType {
 export interface CardType {
   quote: string;
   prompt: string;
+  source: string;
   category: CategoryKeys;
   song?: true;
   finished?: true;
