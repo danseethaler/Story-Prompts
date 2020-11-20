@@ -1,4 +1,5 @@
 export {default as AnimatedGradient} from './AnimatedGradient';
+export {default as AnimatedGradientChild} from './AnimatedGradientChild';
 export {default as CategoryButton} from './CategoryButton';
 export {default as CornerRadius} from './CornerRadius';
 export {default as CornerRadiusButton} from './CornerRadiusButton';

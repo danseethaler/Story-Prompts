@@ -3,7 +3,12 @@ import * as Haptics from 'expo-haptics';
 import _ from 'lodash';
 import React, {useEffect, useRef, useState} from 'react';
 import {Animated, Text} from 'react-native';
-import {BothSafeArea, LinearButton, WContainer} from 'wComponents';
+import {
+  AnimatedGradientChild,
+  BothSafeArea,
+  LinearButton,
+  WContainer,
+} from 'wComponents';
 import {CARD_DRAG_RANGE, getShuffledCards} from 'wConfig';
 import {useAppContext, useGetColorsFromCards} from 'wHooks';
 import {CardType, ModalStackNavProps} from 'wTypes';
@@ -102,11 +107,15 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
             onPress={() => {
               navigation.navigate('Categories');
             }}>
-            <MaterialCommunityIcons
-              name="cards"
-              size={32}
-              color={theme.colors.background700}
-            />
+            <AnimatedGradientChild color1={colors[0]} color2={colors[1]}>
+              {({colors: animatedColors}) => (
+                <MaterialCommunityIcons
+                  name="cards"
+                  size={32}
+                  color={animatedColors[theme.darkMode ? 1 : 0]}
+                />
+              )}
+            </AnimatedGradientChild>
           </LinearButton>
         </WContainer>
 
