@@ -47,14 +47,9 @@ const Card: React.FC<Props> = ({
   const [isCapturing, setIsCapturing] = useState(false);
 
   const getMainCardStyle = (): any => {
-    const width = Math.min(screenWidth * 0.9, 320);
-    const height = Math.min(width * 1.5, screenHeight - 400);
-
     return {
       position: 'absolute',
       alignSelf: 'center',
-      width,
-      height,
       backgroundColor: theme.colors.background100,
       borderRadius: 12,
       overflow: 'hidden',

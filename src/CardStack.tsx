@@ -5,7 +5,7 @@ import {CARD_DRAG_RANGE} from 'wConfig';
 import {CardType} from 'wTypes';
 import Card from './Card';
 import WContainer from './components/WContainer';
-import {screenHeight} from './styled/sizing';
+import {screenHeight, screenWidth} from './styled/sizing';
 
 interface Props {
   cards: CardType[];
@@ -101,8 +101,14 @@ const CardStack: React.FC<Props> = ({
     }),
   ).current;
 
+  const cardWidth = Math.min(screenWidth * 0.9, 320);
+  const cardHeight = Math.min(cardWidth * 1.5, screenHeight - 400);
+  // The 300 in this number is just a loose number based on the 400px offset
+  // above
+  const pushFromTopAmount = (screenHeight - cardHeight - 300) / 2;
+
   return (
-    <WContainer flex={1} wMarginTop={4} stretch>
+    <WContainer flex={1} wMarginTop={pushFromTopAmount / 8} stretch>
       {_.map(cards, (card, index) => {
         const topFirstIndex = cards.length - index - 1;
         const isPrimaryCard = topFirstIndex === 0;
@@ -112,6 +118,8 @@ const CardStack: React.FC<Props> = ({
 
         const style: any = {
           opacity: 1,
+          width: cardWidth,
+          height: cardHeight,
         };
 
         const contentStyle: any = {};
