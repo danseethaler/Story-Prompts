@@ -1,6 +1,6 @@
 import React from 'react';
 import {Animated} from 'react-native';
-import GradientHelper from './GradientHelper';
+import AnimatedGradient from './AnimatedGradient';
 import ScaleButton, {ScaleButtonProps} from './ScaleButton';
 
 interface LinearButtonProps extends ScaleButtonProps {
@@ -10,8 +10,6 @@ interface LinearButtonProps extends ScaleButtonProps {
   touchStyle?: any;
 }
 
-const AnimatedGradientHelper = Animated.createAnimatedComponent(GradientHelper);
-
 const LinearButton = ({
   children,
   gradientColor1,
@@ -20,12 +18,12 @@ const LinearButton = ({
   ...rest
 }: LinearButtonProps) => (
   <ScaleButton {...rest}>
-    <AnimatedGradientHelper
+    <AnimatedGradient
       style={touchStyle}
       color1={gradientColor1}
       color2={gradientColor2}>
       {children}
-    </AnimatedGradientHelper>
+    </AnimatedGradient>
   </ScaleButton>
 );
 

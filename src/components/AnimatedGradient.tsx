@@ -1,5 +1,6 @@
 import {LinearGradient, LinearGradientPoint} from 'expo-linear-gradient';
 import React, {Component} from 'react';
+import {Animated} from 'react-native';
 
 interface Props {
   color1: string;
@@ -31,4 +32,6 @@ class GradientHelper extends Component<Props> {
   }
 }
 
-export default GradientHelper;
+const AnimatedGradient = Animated.createAnimatedComponent(GradientHelper);
+
+export default AnimatedGradient;
