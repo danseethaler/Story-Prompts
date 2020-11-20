@@ -1,6 +1,7 @@
 import {
   categories,
   categoryColors,
+  categoryColorsCenter,
   categoryColorsLight,
 } from '../config/cardData';
 import {screenHeight} from './sizing';
@@ -164,6 +165,7 @@ const baseTheme = {
   constantColors,
   categoryColors,
   categoryColorsLight,
+  categoryColorsCenter,
 };
 
 export type ColorTheme = {[key in keyof typeof lightThemeColors]: string};
@@ -201,6 +203,7 @@ export interface Theme {
   constantColors: ConstantColorTheme;
   categoryColors: CategoryColorsType;
   categoryColorsLight: CategoryColorsType;
+  categoryColorsCenter: CategoryColorsType;
   transition: string;
   isSmallerScreen: boolean;
 }

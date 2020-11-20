@@ -25,6 +25,7 @@ export interface CategoryType {
   title: string;
   color: string;
   colorLight: string;
+  colorCenter: string;
 }
 
 export interface CardType {

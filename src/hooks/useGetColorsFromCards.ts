@@ -39,13 +39,16 @@ const useGetColorsFromCards = (
       const card = _.last(cards) as CardType;
       const color = theme.categoryColors[card.category];
       const colorLight = theme.categoryColorsLight[card.category];
+      const colorCenter = theme.categoryColorsCenter[card.category];
 
       const nextCard = cards[cards.length - 2] || card;
       const nextColor = theme.categoryColors[nextCard.category];
       const nextColorLight = theme.categoryColorsLight[nextCard.category];
+      const nextColorCenter = theme.categoryColorsCenter[nextCard.category];
 
       const firstColors = [color, nextColor];
       const secondColors = [colorLight, nextColorLight];
+      const centerColors = [colorCenter, nextColorCenter];
 
       const colorTransition = offsetValue.interpolate({
         inputRange: [0, CARD_DRAG_RANGE],
@@ -59,7 +62,13 @@ const useGetColorsFromCards = (
         extrapolate: 'clamp',
       });
 
-      return [colorTransition, colorTransition2];
+      const colorTransitionCenter = offsetValue.interpolate({
+        inputRange: [0, CARD_DRAG_RANGE],
+        outputRange: centerColors,
+        extrapolate: 'clamp',
+      });
+
+      return [colorTransition, colorTransition2, colorTransitionCenter];
     },
   ];
 };

@@ -7,6 +7,7 @@ import {
   AnimatedGradientChild,
   BothSafeArea,
   LinearButton,
+  ScaleButton,
   WContainer,
 } from 'wComponents';
 import {CARD_DRAG_RANGE, getShuffledCards} from 'wConfig';
@@ -93,30 +94,24 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
     <BothSafeArea bottomColor={theme.colors.background250}>
       <WContainer flex={1} stretch wPadding={[3, 0]}>
         <WContainer align="flex-end" stretch wPaddingRight={4}>
-          <LinearButton
+          <ScaleButton
             viewStyle={{
               borderRadius: 40,
               overflow: 'hidden',
             }}
-            touchStyle={{
-              padding: 12,
-              align: 'center',
-            }}
-            gradientColor1={theme.colors.background100}
-            gradientColor2={theme.colors.background100}
             onPress={() => {
               navigation.navigate('Categories');
             }}>
-            <AnimatedGradientChild color1={colors[0]} color2={colors[1]}>
+            <AnimatedGradientChild color1={colors[2]}>
               {({colors: animatedColors}) => (
                 <MaterialCommunityIcons
                   name="cards"
                   size={32}
-                  color={animatedColors[theme.darkMode ? 1 : 0]}
+                  color={animatedColors[0]}
                 />
               )}
             </AnimatedGradientChild>
-          </LinearButton>
+          </ScaleButton>
         </WContainer>
 
         <CardStack

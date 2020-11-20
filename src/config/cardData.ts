@@ -10,48 +10,56 @@ export const categories: {
     title: 'Emotional',
     color: '#FD3E7E',
     colorLight: '#F5A051',
+    colorCenter: '#F96F68',
   },
   environmental: {
     key: 'environmental',
     title: 'Environmental',
     color: '#00AD8E',
     colorLight: '#B1ED4A',
+    colorCenter: '#59CD6C',
   },
   intellectual: {
     key: 'intellectual',
     title: 'Intellectual',
     color: '#024A97',
     colorLight: '#669EFF',
+    colorCenter: '#3474CB',
   },
   occupational: {
     key: 'occupational',
     title: 'Occupational',
     color: '#8F048F',
     colorLight: '#FF66A3',
+    colorCenter: '#C73599',
   },
   physical: {
     key: 'physical',
     title: 'Physical',
     color: '#FA8638',
     colorLight: '#FBCA3A',
+    colorCenter: '#FBA839',
   },
   social: {
     key: 'social',
     title: 'Social',
     color: '#5329F0',
     colorLight: '#9B66DC',
+    colorCenter: '#7748E6',
   },
   spiritual: {
     key: 'spiritual',
     title: 'Spiritual',
     color: '#00998C',
     colorLight: '#7AFFE9',
+    colorCenter: '#3DCCBB',
   },
   wild: {
     key: 'wild',
     title: 'Wild',
     color: '#09A0CE',
     colorLight: '#EB00E3',
+    colorCenter: '#7A50D9',
   },
 };
 
@@ -64,6 +72,12 @@ export const categoryColors = _.reduce(
 export const categoryColorsLight = _.reduce(
   categories,
   (prev, category, key) => ({...prev, [key]: category.colorLight}),
+  {},
+) as CategoryColorsType;
+
+export const categoryColorsCenter = _.reduce(
+  categories,
+  (prev, category, key) => ({...prev, [key]: category.colorCenter}),
   {},
 ) as CategoryColorsType;
 
