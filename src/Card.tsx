@@ -48,105 +48,107 @@ const Card: React.FC<Props> = ({
 
   const getMainCardStyle = (): any => {
     const width = Math.min(screenWidth * 0.9, 320);
-    const height = Math.min(width * 1.5, screenHeight - 300);
+    const height = Math.min(width * 1.5, screenHeight - 400);
 
     return {
       position: 'absolute',
       alignSelf: 'center',
       width,
       height,
-      backgroundColor: '#39394C',
-      padding: 16,
+      backgroundColor: theme.colors.background100,
       borderRadius: 12,
+      overflow: 'hidden',
       ...style,
     };
   };
 
   let content = (
-    <>
-      <WContainer
+    <WContainer flex={1} align="center">
+      <LinearGradient
+        colors={[categoryColor, categoryColorLight]}
+        start={{x: 0, y: 1}}
+        end={{x: 1, y: 1}}
         style={{
-          borderRadius: 22,
-          overflow: 'hidden',
+          paddingVertical: 8,
+          paddingHorizontal: 16,
+          width: '100%',
+          backgroundColor: categoryColorLight,
         }}>
-        <LinearGradient
-          colors={[categoryColor, categoryColorLight]}
-          start={{x: 0, y: 1}}
-          end={{x: 1, y: 1}}
-          style={{
-            paddingVertical: 4,
-            paddingHorizontal: 16,
-            backgroundColor: categoryColorLight,
-          }}>
-          <Text
-            style={{
-              fontWeight: '600',
-              fontFamily: 'Avenir Next',
-              textAlign: 'center',
-              fontSize: 18,
-              color: theme.colors.white,
-            }}>
-            {title}
-          </Text>
-        </LinearGradient>
-      </WContainer>
-
-      <WContainer align="center">
-        {song ? (
-          <Ionicons
-            name="ios-musical-notes"
-            size={20}
-            color={theme.colors.text100}
-          />
-        ) : (
-          <FontAwesome
-            name="quote-left"
-            size={20}
-            color={theme.colors.text100}
-          />
-        )}
-
         <Text
           style={{
-            marginTop: 12,
             fontWeight: '600',
-            fontFamily: 'Avenir Next',
-            textAlign: 'center',
-            fontSize: 24,
-            color: theme.colors.white,
-          }}>
-          {quote}
-        </Text>
-
-        <Text
-          style={{
-            marginTop: 12,
-            fontWeight: '500',
             fontFamily: 'Avenir Next',
             textAlign: 'center',
             fontSize: 18,
             color: theme.colors.white,
           }}>
-          - {source}
+          {title}
+        </Text>
+      </LinearGradient>
+
+      <WContainer flex={1} justify="space-around" align="center" wPadding={2}>
+        <WContainer align="center">
+          {song ? (
+            <Ionicons
+              name="ios-musical-notes"
+              size={20}
+              color={theme.colors.text100}
+            />
+          ) : (
+            <FontAwesome
+              name="quote-left"
+              size={20}
+              color={theme.colors.text100}
+            />
+          )}
+
+          <Text
+            style={{
+              marginTop: 12,
+              fontWeight: '600',
+              fontFamily: 'Avenir Next',
+              textAlign: 'center',
+              fontSize: 24,
+              color: theme.colors.text400,
+            }}>
+            {quote}
+          </Text>
+
+          <Text
+            style={{
+              marginTop: 12,
+              fontWeight: '500',
+              fontFamily: 'Avenir Next',
+              textAlign: 'center',
+              fontSize: 18,
+              color: theme.colors.text400,
+            }}>
+            - {source}
+          </Text>
+        </WContainer>
+
+        <Text
+          style={{
+            fontWeight: '500',
+            fontFamily: 'Avenir Next',
+            textAlign: 'center',
+            fontSize: 18,
+            color: theme.colors.text400,
+          }}>
+          {prompt}
         </Text>
       </WContainer>
-
-      <Text
-        style={{
-          fontWeight: '500',
-          fontFamily: 'Avenir Next',
-          textAlign: 'center',
-          fontSize: 18,
-          color: theme.colors.white,
-        }}>
-        {prompt}
-      </Text>
-    </>
+    </WContainer>
   );
 
   if (finished) {
     content = (
-      <WContainer flex={1} align="center" stretch justify="space-around">
+      <WContainer
+        flex={1}
+        stretch
+        justify="space-around"
+        align="center"
+        wPadding={2}>
         <WContainer wMarginBottom={1} flex={1} align="center" justify="center">
           <Text
             style={{
@@ -162,10 +164,9 @@ const Card: React.FC<Props> = ({
               fontFamily: 'Avenir Next',
               textAlign: 'center',
               fontSize: 28,
-              color: theme.colors.white,
+              color: theme.colors.text400,
             }}>
-            {/* {'Being connected\nfeels good.'} */}
-            {'Those who tell stories rule society.'}
+            Those who tell stories rule society.
           </Text>
           <Text
             style={{
@@ -258,15 +259,13 @@ const Card: React.FC<Props> = ({
   return (
     <Animated.View ref={cardRef} style={getMainCardStyle()} {...panHandlers}>
       <Animated.View style={{flex: 1, ...contentStyle}}>
-        <WContainer flex={1} align="center" justify="space-around">
-          {content}
-        </WContainer>
+        {content}
       </Animated.View>
 
       {!finished && !isCapturing && (
         <Pressable
           hitSlop={16}
-          style={{position: 'absolute', top: 12, right: 12}}
+          style={{position: 'absolute', top: 6, right: 10}}
           onPress={async () => {
             // Hide the share icon before capturing a screenshot
             setIsCapturing(true);
@@ -289,7 +288,7 @@ const Card: React.FC<Props> = ({
           <MaterialCommunityIcons
             name="share"
             size={26}
-            color={theme.colors.background250}
+            color={theme.colors.white}
           />
         </Pressable>
       )}

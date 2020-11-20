@@ -85,7 +85,7 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
   }
 
   return (
-    <BothSafeArea bottomColor="#1B1B24">
+    <BothSafeArea bottomColor={theme.colors.background250}>
       <WContainer flex={1} stretch wPadding={[3, 0]}>
         <WContainer align="flex-end" stretch wPaddingRight={4}>
           <LinearButton
@@ -97,12 +97,16 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
               padding: 12,
               align: 'center',
             }}
-            gradientColor1={colors[0]}
-            gradientColor2={colors[1]}
+            gradientColor1={theme.colors.background100}
+            gradientColor2={theme.colors.background100}
             onPress={() => {
               navigation.navigate('Categories');
             }}>
-            <MaterialCommunityIcons name="cards" size={32} color="#1B1B24" />
+            <MaterialCommunityIcons
+              name="cards"
+              size={32}
+              color={theme.colors.background700}
+            />
           </LinearButton>
         </WContainer>
 

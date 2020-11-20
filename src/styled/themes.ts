@@ -123,10 +123,10 @@ const darkThemeColors: ColorTheme = {
   purple800: '#E0D6FF',
   purple850: '#E2E1FF',
 
-  background100: '#191830',
+  background100: '#1B1B24',
   background200: '#1F1E39',
-  background250: '#2A2848',
-  background300: '#4F4D6A',
+  background250: '#2E2E3D',
+  background300: '#39394C',
   background400: '#696789',
   background500: '#9F9EAE',
   background600: '#C9C8D5',

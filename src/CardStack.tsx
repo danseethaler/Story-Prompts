@@ -157,7 +157,7 @@ const CardStack: React.FC<Props> = ({
 
           style.opacity = offsetValue.interpolate({
             inputRange: [0, CARD_DRAG_RANGE],
-            outputRange: [0.5, 1],
+            outputRange: [0.6, 1],
             extrapolate: 'clamp',
           });
 
@@ -179,13 +179,13 @@ const CardStack: React.FC<Props> = ({
 
           style.top = offsetValue.interpolate({
             inputRange: [0, CARD_DRAG_RANGE],
-            outputRange: [baseOffset * 2, baseOffset],
+            outputRange: [baseOffset * 2 + 12, baseOffset],
             extrapolate: 'clamp',
           });
 
           style.opacity = offsetValue.interpolate({
             inputRange: [0, CARD_DRAG_RANGE],
-            outputRange: [0.2, 0.5],
+            outputRange: [0.3, 0.6],
             extrapolate: 'clamp',
           });
 
@@ -203,13 +203,13 @@ const CardStack: React.FC<Props> = ({
 
           style.top = offsetValue.interpolate({
             inputRange: [0, CARD_DRAG_RANGE],
-            outputRange: [baseOffset * 3, baseOffset * 2],
+            outputRange: [baseOffset * 3, baseOffset * 2 + 12],
             extrapolate: 'clamp',
           });
 
           style.opacity = offsetValue.interpolate({
             inputRange: [0, CARD_DRAG_RANGE],
-            outputRange: [0, 0.2],
+            outputRange: [0, 0.3],
             extrapolate: 'clamp',
           });
 

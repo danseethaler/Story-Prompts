@@ -24,19 +24,23 @@ const Categories: React.FC<Props> = ({navigation}) => {
           alignSelf: 'center',
           maxWidth: 500,
           borderRadius: 40,
-          backgroundColor: '#1B1B24',
+          backgroundColor: theme.colors.background100,
         }}>
         <WContainer
           wPadding={0.5}
           wMargin={2}
-          style={{borderRadius: 40, width: 80, backgroundColor: '#39394C'}}
+          style={{
+            borderRadius: 40,
+            width: 80,
+            backgroundColor: theme.colors.background300,
+          }}
         />
         <Text
           style={{
             fontFamily: 'Avenir Next',
             fontWeight: '600',
             fontSize: 28,
-            color: theme.colors.white,
+            color: theme.colors.text400,
             padding: theme.baseUnit,
             paddingBottom: theme.baseUnit * 2.5,
           }}>
@@ -61,7 +65,7 @@ const Categories: React.FC<Props> = ({navigation}) => {
 
           <Pressable
             style={{
-              backgroundColor: '#2E2E3D',
+              backgroundColor: theme.colors.background250,
               borderRadius: 60,
               margin: theme.baseUnit * 2,
             }}
@@ -76,7 +80,7 @@ const Categories: React.FC<Props> = ({navigation}) => {
                 paddingVertical: theme.baseUnit * 2,
                 paddingHorizontal: theme.baseUnit * 8,
                 fontFamily: 'Avenir Next',
-                color: theme.colors.white,
+                color: theme.colors.text400,
                 fontSize: 22,
                 lineHeight: 32,
                 fontWeight: '600',
