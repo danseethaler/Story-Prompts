@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Story Prompts",
-    "slug": "story-prompts",
+    "name": "Story Packs",
+    "slug": "story-packs",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/AppIcon.png",
@@ -13,9 +13,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
