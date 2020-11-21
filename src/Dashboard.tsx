@@ -144,7 +144,7 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
                     fontFamily: 'Avenir Next',
                     fontWeight: '600',
                   }}>
-                  Original
+                  Starter Pack
                 </Text>
               </WContainer>
             </WContainer>

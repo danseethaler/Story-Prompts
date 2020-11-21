@@ -40,6 +40,7 @@ export interface CardType {
 export type ModalStackParamList = {
   Dashboard: undefined;
   Topics: undefined;
+  Packs: undefined;
 };
 
 export type ModalStackNavigation<
