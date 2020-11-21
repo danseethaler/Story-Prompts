@@ -2,7 +2,7 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import _ from 'lodash';
 import React, {useEffect, useRef, useState} from 'react';
-import {Animated, Text} from 'react-native';
+import {Animated, LayoutAnimation, Text} from 'react-native';
 import {
   AnimatedGradientChild,
   BothSafeArea,
@@ -24,6 +24,8 @@ type Props = ModalStackNavProps<'Dashboard'>;
 const Dashboard: React.FC<Props> = ({navigation}) => {
   const theme = useStyledTheme();
   const {filter, filterVersion} = useAppContext();
+
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -92,28 +94,144 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
 
   return (
     <BothSafeArea bottomColor={theme.colors.background250}>
-      <WContainer flex={1} stretch wPadding={[3, 0]}>
-        <WContainer align="flex-end" stretch wPaddingRight={4}>
+      <WContainer flex={1} align="center" stretch wPadding={[3, 0]}>
+        {/* Top buttons */}
+        <WContainer
+          align="center"
+          justify="center"
+          stretch={menuOpen}
+          wMargin={[0, 2]}
+          style={{
+            borderRadius: menuOpen ? 20 : 40,
+            overflow: 'hidden',
+          }}>
           <ScaleButton
             viewStyle={{
-              borderRadius: 40,
-              overflow: 'hidden',
+              borderRadius: menuOpen ? 0 : 40,
+              backgroundColor: theme.colors.background100,
+              alignSelf: 'stretch',
+              alignItems: 'stretch',
             }}
             onPress={() => {
-              navigation.navigate('Categories');
+              LayoutAnimation.configureNext({
+                ...LayoutAnimation.Presets.easeInEaseOut,
+                duration: 150,
+              });
+              setMenuOpen(!menuOpen);
             }}>
-            <AnimatedGradientChild color1={colors[2]}>
-              {({colors: animatedColors}) => (
-                <MaterialCommunityIcons
-                  name="cards"
-                  size={32}
-                  color={animatedColors[0]}
-                />
-              )}
-            </AnimatedGradientChild>
+            <WContainer
+              row
+              wMargin={[menuOpen ? 2 : 0, 1]}
+              wPadding={1}
+              align="center"
+              justify="center">
+              <WContainer row align="center" justify="center">
+                <AnimatedGradientChild color1={colors[2]}>
+                  {({colors: animatedColors}) => (
+                    <MaterialCommunityIcons
+                      name="menu-down"
+                      size={32}
+                      color={animatedColors[0]}
+                    />
+                  )}
+                </AnimatedGradientChild>
+                <Text
+                  style={{
+                    paddingLeft: 4,
+                    paddingRight: 8,
+                    fontSize: 20,
+                    color: theme.colors.text600,
+                    fontFamily: 'Avenir Next',
+                    fontWeight: '600',
+                  }}>
+                  Original
+                </Text>
+              </WContainer>
+            </WContainer>
           </ScaleButton>
+
+          {menuOpen && (
+            <WContainer stretch>
+              <ScaleButton
+                viewStyle={{
+                  alignSelf: 'stretch',
+                  backgroundColor: theme.colors.background300,
+                }}
+                onPress={() => {
+                  LayoutAnimation.configureNext({
+                    ...LayoutAnimation.Presets.easeInEaseOut,
+                    duration: 150,
+                  });
+                  setMenuOpen(false);
+
+                  navigation.navigate('Packs');
+                }}>
+                <WContainer stretch row wPadding={[2, 4]} align="center">
+                  <AnimatedGradientChild color1={colors[2]}>
+                    {({colors: animatedColors}) => (
+                      <MaterialCommunityIcons
+                        name="cards"
+                        size={32}
+                        color={animatedColors[0]}
+                      />
+                    )}
+                  </AnimatedGradientChild>
+                  <Text
+                    style={{
+                      paddingLeft: 12,
+                      paddingRight: 8,
+                      fontSize: 20,
+                      color: theme.colors.text600,
+                      fontFamily: 'Avenir Next',
+                      fontWeight: '600',
+                    }}>
+                    Select a Pack
+                  </Text>
+                </WContainer>
+              </ScaleButton>
+
+              <ScaleButton
+                viewStyle={{
+                  alignSelf: 'stretch',
+                  backgroundColor: theme.colors.background300,
+                }}
+                onPress={() => {
+                  LayoutAnimation.configureNext({
+                    ...LayoutAnimation.Presets.easeInEaseOut,
+                    duration: 150,
+                  });
+                  setMenuOpen(false);
+
+                  navigation.navigate('Categories');
+                }}>
+                <WContainer stretch row wPadding={[2, 4]} align="center">
+                  <AnimatedGradientChild color1={colors[2]}>
+                    {({colors: animatedColors}) => (
+                      <MaterialCommunityIcons
+                        name="checkbox-multiple-blank"
+                        size={32}
+                        color={animatedColors[0]}
+                      />
+                    )}
+                  </AnimatedGradientChild>
+                  <Text
+                    style={{
+                      paddingLeft: 12,
+                      paddingRight: 8,
+                      fontSize: 20,
+                      color: theme.colors.text600,
+                      fontFamily: 'Avenir Next',
+                      fontWeight: '600',
+                    }}>
+                    Categories
+                  </Text>
+                </WContainer>
+              </ScaleButton>
+            </WContainer>
+          )}
         </WContainer>
 
+        {/* Card Stack */}
         <CardStack
           cards={cards}
           setActiveIndex={setActiveIndex}
@@ -123,6 +241,7 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
           cardPanValue={cardPanValue}
         />
 
+        {/* Next Button */}
         <WContainer align="center" stretch>
           <Animated.View style={{opacity: nextButtonOpacity} as any}>
             <LinearButton
