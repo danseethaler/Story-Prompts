@@ -30,7 +30,7 @@ const Card: React.FC<Props> = ({
   panHandlers,
   prompt,
   quote,
-  category,
+  topic,
   source,
   style,
   contentStyle,
@@ -39,9 +39,9 @@ const Card: React.FC<Props> = ({
 }) => {
   const navigation = useNavigation<ModalStackNavigation<'Dashboard'>>();
   const theme = useStyledTheme();
-  const categoryColor = theme.categoryColors[category];
-  const categoryColorLight = theme.categoryColorsLight[category];
-  const {title} = categories[category];
+  const topicColor = theme.topicColors[topic];
+  const topicColorLight = theme.topicColorsLight[topic];
+  const {title} = categories[topic];
 
   const cardRef = useRef();
   const [isCapturing, setIsCapturing] = useState(false);
@@ -60,14 +60,14 @@ const Card: React.FC<Props> = ({
   let content = (
     <WContainer flex={1} align="center">
       <LinearGradient
-        colors={[categoryColor, categoryColorLight]}
+        colors={[topicColor, topicColorLight]}
         start={{x: 0, y: 1}}
         end={{x: 1, y: 1}}
         style={{
           paddingVertical: 8,
           paddingHorizontal: 16,
           width: '100%',
-          backgroundColor: categoryColorLight,
+          backgroundColor: topicColorLight,
         }}>
         <Text
           style={{
@@ -192,8 +192,8 @@ const Card: React.FC<Props> = ({
               message: `Stories reveal who we are but it can be tough to get started. Checkout this app that encourages sharing your story!\n\n${APP_STORE_URL}`,
             });
           }}
-          gradientColor1={categoryColor as any}
-          gradientColor2={categoryColorLight as any}>
+          gradientColor1={topicColor as any}
+          gradientColor2={topicColorLight as any}>
           <WContainer row align="center">
             <Text
               style={{
@@ -224,10 +224,10 @@ const Card: React.FC<Props> = ({
             alignItems: 'center',
           }}
           onPress={() => {
-            navigation.navigate('Categories');
+            navigation.navigate('Topics');
           }}
-          gradientColor1={categoryColor as any}
-          gradientColor2={categoryColorLight as any}>
+          gradientColor1={topicColor as any}
+          gradientColor2={topicColorLight as any}>
           <WContainer row align="center">
             <Text
               style={{
@@ -238,7 +238,7 @@ const Card: React.FC<Props> = ({
                 fontSize: 22,
                 color: theme.colors.white,
               }}>
-              New Category
+              New Topic
             </Text>
             <MaterialCommunityIcons
               name="cards"

@@ -1,8 +1,8 @@
 import {
   categories,
-  categoryColors,
-  categoryColorsCenter,
-  categoryColorsLight,
+  topicColors,
+  topicColorsCenter,
+  topicColorsLight,
 } from '../config/cardData';
 import {screenHeight} from './sizing';
 
@@ -163,9 +163,9 @@ const baseTheme = {
   fontWeight,
   fontFamily,
   constantColors,
-  categoryColors,
-  categoryColorsLight,
-  categoryColorsCenter,
+  topicColors,
+  topicColorsLight,
+  topicColorsCenter,
 };
 
 export type ColorTheme = {[key in keyof typeof lightThemeColors]: string};
@@ -188,7 +188,7 @@ interface ShadowObject {
   shadowOpacity?: number;
 }
 
-export type CategoryColorsType = {[key in keyof typeof categories]: string};
+export type TopicColorsType = {[key in keyof typeof categories]: string};
 
 export interface Theme {
   darkMode: boolean;
@@ -201,9 +201,9 @@ export interface Theme {
   fontWeight: FontWeightType;
   colors: ColorTheme;
   constantColors: ConstantColorTheme;
-  categoryColors: CategoryColorsType;
-  categoryColorsLight: CategoryColorsType;
-  categoryColorsCenter: CategoryColorsType;
+  topicColors: TopicColorsType;
+  topicColorsLight: TopicColorsType;
+  topicColorsCenter: TopicColorsType;
   transition: string;
   isSmallerScreen: boolean;
 }

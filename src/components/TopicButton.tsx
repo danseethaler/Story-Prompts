@@ -2,20 +2,20 @@ import {LinearGradient} from 'expo-linear-gradient';
 import React from 'react';
 import {Pressable, Text} from 'react-native';
 import {screenWidth, useStyledTheme} from 'wStyled';
-import {CategoryType} from 'wTypes';
+import {TopicType} from 'wTypes';
 
 interface Props {
-  category: CategoryType;
+  topic: TopicType;
   onPress: () => void;
 }
 
-const CategoryButton: React.FC<Props> = ({category, onPress}) => {
+const TopicButton: React.FC<Props> = ({topic, onPress}) => {
   const theme = useStyledTheme();
 
   return (
     <Pressable onPress={onPress}>
       <LinearGradient
-        colors={[category.color, category.colorLight]}
+        colors={[topic.color, topic.colorLight]}
         start={{x: 0, y: 1}}
         end={{x: 1, y: 1}}
         style={{
@@ -37,11 +37,11 @@ const CategoryButton: React.FC<Props> = ({category, onPress}) => {
             lineHeight: 32,
             fontWeight: '600',
           }}>
-          {category.title}
+          {topic.title}
         </Text>
       </LinearGradient>
     </Pressable>
   );
 };
 
-export default CategoryButton;
+export default TopicButton;

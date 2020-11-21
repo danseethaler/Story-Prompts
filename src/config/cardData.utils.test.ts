@@ -4,25 +4,22 @@ import {getShuffledCards} from './cardData.utils';
 
 const shuffledCards = getShuffledCards();
 
-const categoryPartners = _(shuffledCards)
+const topicPartners = _(shuffledCards)
   .map((card, index) => {
     const nextCard = shuffledCards[index + 1];
 
     if (!nextCard) {
       return null;
     }
-    return [card.category, nextCard.category];
+    return [card.topic, nextCard.topic];
   })
   .filter()
   .value();
 
 // Ensure no categories are sequential in shuffled list
-test.each(categoryPartners)(
-  'Partner Categories: (s%s, %s)',
-  (category1, category2) => {
-    expect(category1).not.toEqual(category2);
-  },
-);
+test.each(topicPartners)('Partner Categories: (s%s, %s)', (topic1, topic2) => {
+  expect(topic1).not.toEqual(topic2);
+});
 
 test('shuffledCards should include all card data', () => {
   expect(shuffledCards).toHaveLength(cardData.length);

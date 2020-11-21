@@ -37,14 +37,14 @@ const useGetColorsFromCards = (
     offsetValue,
     (): Animated.AnimatedInterpolation[] => {
       const card = _.last(cards) as CardType;
-      const color = theme.categoryColors[card.category];
-      const colorLight = theme.categoryColorsLight[card.category];
-      const colorCenter = theme.categoryColorsCenter[card.category];
+      const color = theme.topicColors[card.topic];
+      const colorLight = theme.topicColorsLight[card.topic];
+      const colorCenter = theme.topicColorsCenter[card.topic];
 
       const nextCard = cards[cards.length - 2] || card;
-      const nextColor = theme.categoryColors[nextCard.category];
-      const nextColorLight = theme.categoryColorsLight[nextCard.category];
-      const nextColorCenter = theme.categoryColorsCenter[nextCard.category];
+      const nextColor = theme.topicColors[nextCard.topic];
+      const nextColorLight = theme.topicColorsLight[nextCard.topic];
+      const nextColorCenter = theme.topicColorsCenter[nextCard.topic];
 
       const firstColors = [color, nextColor];
       const secondColors = [colorLight, nextColorLight];

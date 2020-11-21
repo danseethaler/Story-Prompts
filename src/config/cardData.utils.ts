@@ -4,7 +4,7 @@ import cardData from './cardData';
 
 export const getShuffledCards = () => {
   const shuffledCards = _.shuffle(cardData);
-  const groups = _.groupBy(shuffledCards, 'category');
+  const groups = _.groupBy(shuffledCards, 'topic');
   const uniqueKeys = _.keys(groups);
 
   const shuffledSeparatedCards: CardType[] = [];

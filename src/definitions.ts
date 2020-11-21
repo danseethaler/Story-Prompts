@@ -2,7 +2,7 @@ import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 export interface AppState {
-  filter: null | CategoryKeys;
+  filter: null | TopicKeys;
   filterVersion: number;
 }
 
@@ -10,7 +10,7 @@ export interface AppContextType extends AppState {
   updateContext: (state: Partial<AppContextType>) => void;
 }
 
-export type CategoryKeys =
+export type TopicKeys =
   | 'emotional'
   | 'environmental'
   | 'intellectual'
@@ -20,8 +20,8 @@ export type CategoryKeys =
   | 'spiritual'
   | 'wild';
 
-export interface CategoryType {
-  key: CategoryKeys;
+export interface TopicType {
+  key: TopicKeys;
   title: string;
   color: string;
   colorLight: string;
@@ -32,14 +32,14 @@ export interface CardType {
   quote: string;
   prompt: string;
   source: string;
-  category: CategoryKeys;
+  topic: TopicKeys;
   song?: true;
   finished?: true;
 }
 
 export type ModalStackParamList = {
   Dashboard: undefined;
-  Categories: undefined;
+  Topics: undefined;
 };
 
 export type ModalStackNavigation<

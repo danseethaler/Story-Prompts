@@ -1,15 +1,15 @@
 import _ from 'lodash';
 import React from 'react';
 import {Pressable, Text} from 'react-native';
-import {CategoryButton, PartialModal, WContainer} from 'wComponents';
+import {TopicButton, PartialModal, WContainer} from 'wComponents';
 import {categories} from 'wConfig';
 import {useAppContext} from 'wHooks';
 import {ModalStackNavProps} from 'wTypes';
 import {useStyledTheme} from './styled/styled';
 
-type Props = ModalStackNavProps<'Categories'>;
+type Props = ModalStackNavProps<'Topics'>;
 
-const Categories: React.FC<Props> = ({navigation}) => {
+const Topics: React.FC<Props> = ({navigation}) => {
   const theme = useStyledTheme();
   const {updateContext} = useAppContext();
 
@@ -44,17 +44,17 @@ const Categories: React.FC<Props> = ({navigation}) => {
             padding: theme.baseUnit,
             paddingBottom: theme.baseUnit * 2.5,
           }}>
-          Categories
+          Topics
         </Text>
         <WContainer row style={{flexWrap: 'wrap'}} justify="center" stretch>
-          {_.map(categories, (category) => {
+          {_.map(categories, (topic) => {
             return (
-              <CategoryButton
-                key={category.key}
-                category={category}
+              <TopicButton
+                key={topic.key}
+                topic={topic}
                 onPress={() => {
                   updateContext({
-                    filter: category.key,
+                    filter: topic.key,
                     filterVersion: Date.now(),
                   });
                   navigation.pop();
@@ -95,4 +95,4 @@ const Categories: React.FC<Props> = ({navigation}) => {
   );
 };
 
-export default Categories;
+export default Topics;

@@ -2,7 +2,7 @@ import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import React from 'react';
 import {useStyledTheme} from 'wStyled';
 import {ModalStackParamList} from 'wTypes';
-import Categories from './Categories';
+import Topics from './Topics';
 import Dashboard from './Dashboard';
 import {screenHeight} from './styled/sizing';
 
@@ -29,7 +29,7 @@ const ModalStack: React.FC = () => {
         },
       }}>
       <Stack.Screen name="Dashboard" component={Dashboard} />
-      <Stack.Screen name="Categories" component={Categories} />
+      <Stack.Screen name="Topics" component={Topics} />
     </Stack.Navigator>
   );
 };
