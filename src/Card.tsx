@@ -64,21 +64,59 @@ const Card: React.FC<Props> = ({
         start={{x: 0, y: 1}}
         end={{x: 1, y: 1}}
         style={{
-          paddingVertical: 8,
+          paddingVertical: 16,
           paddingHorizontal: 16,
           width: '100%',
           backgroundColor: topicColorLight,
         }}>
-        <Text
-          style={{
-            fontWeight: '600',
-            fontFamily: 'Avenir Next',
-            textAlign: 'center',
-            fontSize: 18,
-            color: theme.colors.white,
-          }}>
-          {title}
-        </Text>
+        <WContainer row align="center" justify="space-between">
+          {/* Spacer to move the topic to the center */}
+          <WContainer style={{width: 26, height: 28}} />
+
+          <Text
+            style={{
+              fontWeight: '600',
+              fontFamily: 'Avenir Next',
+              textAlign: 'center',
+              fontSize: 18,
+              color: theme.colors.white,
+            }}>
+            {title}
+          </Text>
+
+          {isCapturing ? (
+            <WContainer style={{width: 26, height: 28}} />
+          ) : (
+            <Pressable
+              hitSlop={16}
+              // style={{position: 'absolute', top: 6, right: 10}}
+              onPress={async () => {
+                // Hide the share icon before capturing a screenshot
+                setIsCapturing(true);
+
+                // Move the captureRef to the nextTick to allow a render cycle
+                setTimeout(async () => {
+                  const fileUrl = await captureRef(cardRef, {
+                    result: 'tmpfile',
+                    quality: 1,
+                    format: 'png',
+                  });
+
+                  setIsCapturing(false);
+
+                  Share.share({
+                    url: fileUrl,
+                  }).finally(() => releaseCapture(fileUrl));
+                });
+              }}>
+              <MaterialCommunityIcons
+                name="share"
+                size={26}
+                color={theme.colors.white}
+              />
+            </Pressable>
+          )}
+        </WContainer>
       </LinearGradient>
 
       <WContainer flex={1} justify="space-around" align="center" wPadding={2}>
@@ -256,37 +294,6 @@ const Card: React.FC<Props> = ({
       <Animated.View style={{flex: 1, ...contentStyle}}>
         {content}
       </Animated.View>
-
-      {!finished && !isCapturing && (
-        <Pressable
-          hitSlop={16}
-          style={{position: 'absolute', top: 6, right: 10}}
-          onPress={async () => {
-            // Hide the share icon before capturing a screenshot
-            setIsCapturing(true);
-
-            // Move the captureRef to the nextTick to allow a render cycle
-            setTimeout(async () => {
-              const fileUrl = await captureRef(cardRef, {
-                result: 'tmpfile',
-                quality: 1,
-                format: 'png',
-              });
-
-              setIsCapturing(false);
-
-              Share.share({
-                url: fileUrl,
-              }).finally(() => releaseCapture(fileUrl));
-            });
-          }}>
-          <MaterialCommunityIcons
-            name="share"
-            size={26}
-            color={theme.colors.white}
-          />
-        </Pressable>
-      )}
     </Animated.View>
   );
 };
