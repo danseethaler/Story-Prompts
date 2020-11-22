@@ -1,6 +1,5 @@
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
-import _ from 'lodash';
 import React, {useEffect, useRef, useState} from 'react';
 import {Animated, LayoutAnimation, Text} from 'react-native';
 import {
@@ -10,59 +9,26 @@ import {
   ScaleButton,
   WContainer,
 } from 'wComponents';
-import {CARD_DRAG_RANGE, getShuffledCards} from 'wConfig';
+import {CARD_DRAG_RANGE} from 'wConfig';
 import {useAppContext, useGetColorsFromCards} from 'wHooks';
-import {CardType, ModalStackNavProps} from 'wTypes';
+import {ModalStackNavProps} from 'wTypes';
 import CardStack from './CardStack';
 import {screenWidth} from './styled/sizing';
 import {useStyledTheme} from './styled/styled';
-
-const shuffledCards = getShuffledCards();
 
 type Props = ModalStackNavProps<'Dashboard'>;
 
 const Dashboard: React.FC<Props> = ({navigation}) => {
   const theme = useStyledTheme();
-  const {filter, filterVersion} = useAppContext();
+  const {activeCards, setActiveCardIndex} = useAppContext();
 
   const [menuOpen, setMenuOpen] = useState(false);
-
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const [storedCards, setStoredCards] = useState(shuffledCards);
-
-  useEffect(() => {
-    setActiveIndex(0);
-
-    const newStoredCards = _(shuffledCards)
-      .filter((card) => !filter || card.topic === filter)
-      .value();
-
-    setStoredCards(newStoredCards);
-  }, [filter, filterVersion]);
-
-  const cards = _(storedCards)
-    .slice(activeIndex, activeIndex + 4)
-    .reverse()
-    .value();
-
-  if (cards.length < 4) {
-    cards.unshift({
-      prompt: '',
-      quote: '',
-      source: '',
-      // Use the most recent card topic - this will make the color stay the
-      // same between the second to last topic and the last topic
-      topic: (_.last(storedCards) as CardType).topic,
-      finished: true,
-    });
-  }
 
   const [
     offSetMoveHandler,
     offsetValue,
     getColorsFromCards,
-  ] = useGetColorsFromCards(cards);
+  ] = useGetColorsFromCards(activeCards);
   const colors = getColorsFromCards();
 
   const cardPanValue = useRef(new Animated.ValueXY()).current;
@@ -82,13 +48,13 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
   }, []);
 
   let nextButtonOpacity: Number | Animated.AnimatedInterpolation = 1;
-  if (cards.length === 2) {
+  if (activeCards.length === 2) {
     nextButtonOpacity = offsetValue.interpolate({
       inputRange: [0, CARD_DRAG_RANGE],
       outputRange: [1, 0],
       extrapolate: 'clamp',
     });
-  } else if (cards.length === 1) {
+  } else if (activeCards.length === 1) {
     nextButtonOpacity = 0;
   }
 
@@ -233,8 +199,8 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
 
         {/* Card Stack */}
         <CardStack
-          cards={cards}
-          setActiveIndex={setActiveIndex}
+          cards={activeCards}
+          setActiveCardIndex={setActiveCardIndex}
           offSetMoveHandler={offSetMoveHandler}
           offsetValue={offsetValue}
           cardPanMoveHandler={cardPanMoveHandler}
@@ -248,13 +214,13 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
               viewStyle={{
                 borderRadius: 40,
                 overflow: 'hidden',
-                opacity: cards.length === 1 ? 0 : 1,
+                opacity: activeCards.length === 1 ? 0 : 1,
               }}
               touchStyle={{
                 paddingHorizontal: 100,
                 paddingVertical: 14,
               }}
-              disabled={cards.length === 1}
+              disabled={activeCards.length === 1}
               gradientColor1={colors[0]}
               gradientColor2={colors[1]}
               onPress={() => {
@@ -292,7 +258,7 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
                     useNativeDriver: false,
                   }).start();
 
-                  setActiveIndex((activeIndex) => activeIndex + 1);
+                  setActiveCardIndex((activeIndex) => activeIndex + 1);
                 }, exitDuration);
               }}>
               <WContainer row align="center" justify="center">

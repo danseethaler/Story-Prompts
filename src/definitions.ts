@@ -7,6 +7,8 @@ export interface AppState {
 }
 
 export interface AppContextType extends AppState {
+  activeCards: CardType[];
+  setActiveCardIndex: React.Dispatch<React.SetStateAction<number>>;
   updateContext: (state: Partial<AppContextType>) => void;
 }
 

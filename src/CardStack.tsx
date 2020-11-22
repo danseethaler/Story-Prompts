@@ -9,7 +9,7 @@ import {screenHeight, screenWidth} from './styled/sizing';
 
 interface Props {
   cards: CardType[];
-  setActiveIndex: React.Dispatch<React.SetStateAction<number>>;
+  setActiveCardIndex: React.Dispatch<React.SetStateAction<number>>;
   offsetValue: Animated.Value;
   offSetMoveHandler: (e: PanResponderGestureState) => void;
   cardPanValue: Animated.ValueXY;
@@ -18,13 +18,14 @@ interface Props {
 
 const CardStack: React.FC<Props> = ({
   cards,
-  setActiveIndex,
+  setActiveCardIndex,
   cardPanMoveHandler,
   cardPanValue,
   offSetMoveHandler,
   offsetValue,
 }) => {
-  const handleRemove = () => setActiveIndex((activeIndex) => activeIndex + 1);
+  const handleRemove = () =>
+    setActiveCardIndex((activeIndex) => activeIndex + 1);
 
   const panResponder = useRef(
     PanResponder.create({
