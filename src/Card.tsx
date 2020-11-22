@@ -43,7 +43,7 @@ const Card: React.FC<Props> = ({
   const theme = useStyledTheme();
   const topicColor = theme.topicColors[topic];
   const topicColorLight = theme.topicColorsLight[topic];
-  const {title} = packData.topics[topic];
+  const topicTitle = packData.topics[topic].title;
 
   const cardRef = useRef();
   const [isCapturing, setIsCapturing] = useState(false);
@@ -53,7 +53,7 @@ const Card: React.FC<Props> = ({
       position: 'absolute',
       alignSelf: 'center',
       backgroundColor: theme.colors.background100,
-      borderRadius: 12,
+      borderRadius: 24,
       overflow: 'hidden',
       ...style,
     };
@@ -66,7 +66,7 @@ const Card: React.FC<Props> = ({
         start={{x: 0, y: 1}}
         end={{x: 1, y: 1}}
         style={{
-          paddingVertical: 16,
+          paddingVertical: 12,
           paddingHorizontal: 16,
           width: '100%',
           backgroundColor: topicColorLight,
@@ -80,10 +80,10 @@ const Card: React.FC<Props> = ({
               fontWeight: '600',
               fontFamily: 'Avenir Next',
               textAlign: 'center',
-              fontSize: 18,
+              fontSize: 22,
               color: theme.colors.white,
             }}>
-            {title}
+            {topicTitle}
           </Text>
 
           {isCapturing ? (
