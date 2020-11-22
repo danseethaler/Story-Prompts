@@ -1,9 +1,5 @@
-import {
-  categories,
-  topicColors,
-  topicColorsCenter,
-  topicColorsLight,
-} from '../config/cardData';
+import _ from 'lodash';
+import {PackType} from 'wTypes';
 import {screenHeight} from './sizing';
 
 const TRANSITION_DURATION = 300;
@@ -157,17 +153,6 @@ const constantColors = {
 
 type ConstantColorTheme = {[key in keyof typeof constantColors]: string};
 
-const baseTheme = {
-  baseUnit: 8,
-  fontUnit: 4,
-  fontWeight,
-  fontFamily,
-  constantColors,
-  topicColors,
-  topicColorsLight,
-  topicColorsCenter,
-};
-
 export type ColorTheme = {[key in keyof typeof lightThemeColors]: string};
 export type ColorKeys = keyof ColorTheme;
 
@@ -188,7 +173,9 @@ interface ShadowObject {
   shadowOpacity?: number;
 }
 
-export type TopicColorsType = {[key in keyof typeof categories]: string};
+// With multiple packs we don't have a static list of topics so the key is
+// just a string
+export type TopicColorsType = {[key: string]: string};
 
 export interface Theme {
   darkMode: boolean;
@@ -213,35 +200,68 @@ interface Themes {
   dark: Theme;
 }
 
-const themes: Themes = {
-  dark: {
-    ...baseTheme,
-    outerShadow: {},
-    innerShadow: {},
-    darkMode: true,
-    colors: darkThemeColors,
-    transition: TRANSITION_ALL,
-    isSmallerScreen: screenHeight <= 800,
-  },
-  light: {
-    ...baseTheme,
-    outerShadow: {
-      shadowColor: lightThemeColors.background300,
-      shadowRadius: 6,
-      shadowOffset: {width: -4, height: 4},
-      shadowOpacity: 0.5,
+const useGetThemeData = (pack: PackType) => {
+  const topicColors = _.reduce(
+    pack.topics,
+    (prev, topic, key) => ({...prev, [key]: topic.color}),
+    {},
+  ) as TopicColorsType;
+
+  const topicColorsLight = _.reduce(
+    pack.topics,
+    (prev, topic, key) => ({...prev, [key]: topic.colorLight}),
+    {},
+  ) as TopicColorsType;
+
+  const topicColorsCenter = _.reduce(
+    pack.topics,
+    (prev, topic, key) => ({...prev, [key]: topic.colorCenter}),
+    {},
+  ) as TopicColorsType;
+
+  const baseTheme = {
+    baseUnit: 8,
+    fontUnit: 4,
+    fontWeight,
+    fontFamily,
+    constantColors,
+    topicColors,
+    topicColorsLight,
+    topicColorsCenter,
+  };
+
+  const themes: Themes = {
+    dark: {
+      ...baseTheme,
+      outerShadow: {},
+      innerShadow: {},
+      darkMode: true,
+      colors: darkThemeColors,
+      transition: TRANSITION_ALL,
+      isSmallerScreen: screenHeight <= 800,
     },
-    innerShadow: {
-      shadowColor: lightThemeColors.background300,
-      shadowRadius: 2,
-      shadowOffset: {width: -1, height: 1},
-      shadowOpacity: 1,
+    light: {
+      ...baseTheme,
+      outerShadow: {
+        shadowColor: lightThemeColors.background300,
+        shadowRadius: 6,
+        shadowOffset: {width: -4, height: 4},
+        shadowOpacity: 0.5,
+      },
+      innerShadow: {
+        shadowColor: lightThemeColors.background300,
+        shadowRadius: 2,
+        shadowOffset: {width: -1, height: 1},
+        shadowOpacity: 1,
+      },
+      darkMode: false,
+      colors: lightThemeColors,
+      transition: TRANSITION_ALL,
+      isSmallerScreen: screenHeight <= 800,
     },
-    darkMode: false,
-    colors: lightThemeColors,
-    transition: TRANSITION_ALL,
-    isSmallerScreen: screenHeight <= 800,
-  },
+  };
+
+  return themes;
 };
 
-export default themes;
+export default useGetThemeData;

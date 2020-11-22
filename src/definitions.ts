@@ -3,13 +3,17 @@ import {StackNavigationProp} from '@react-navigation/stack';
 
 export interface AppState {
   filter: null | TopicKeys;
-  filterVersion: number;
+  packData: PackType;
+  availableCards: CardType[];
+  cardIndex: number;
 }
 
 export interface AppContextType extends AppState {
   activeCards: CardType[];
-  setActiveCardIndex: React.Dispatch<React.SetStateAction<number>>;
-  updateContext: (state: Partial<AppContextType>) => void;
+  goToNextCardIndex: () => void;
+  updateContext: (
+    state: Partial<AppContextType> | ((state: AppState) => AppState),
+  ) => void;
 }
 
 export type TopicKeys =
@@ -20,7 +24,10 @@ export type TopicKeys =
   | 'physical'
   | 'social'
   | 'spiritual'
-  | 'wild';
+  | 'wild'
+  | 'career'
+  | 'childhood'
+  | 'finances';
 
 export interface TopicType {
   key: TopicKeys;
@@ -37,6 +44,17 @@ export interface CardType {
   topic: TopicKeys;
   song?: true;
   finished?: true;
+}
+
+export interface PackType {
+  key: string;
+  title: string;
+  color: string;
+  colorLight: string;
+  topics: {
+    [key: string]: TopicType;
+  };
+  cardData: CardType[];
 }
 
 export type ModalStackParamList = {

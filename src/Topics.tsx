@@ -1,8 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import {Pressable, Text} from 'react-native';
-import {TopicButton, PartialModal, WContainer} from 'wComponents';
-import {categories} from 'wConfig';
+import {PartialModal, TopicButton, WContainer} from 'wComponents';
 import {useAppContext} from 'wHooks';
 import {ModalStackNavProps} from 'wTypes';
 import {useStyledTheme} from './styled/styled';
@@ -11,7 +10,7 @@ type Props = ModalStackNavProps<'Topics'>;
 
 const Topics: React.FC<Props> = ({navigation}) => {
   const theme = useStyledTheme();
-  const {updateContext} = useAppContext();
+  const {updateContext, packData} = useAppContext();
 
   return (
     <PartialModal closeModal={() => navigation.pop()}>
@@ -46,49 +45,51 @@ const Topics: React.FC<Props> = ({navigation}) => {
           }}>
           Topics
         </Text>
-        <WContainer row style={{flexWrap: 'wrap'}} justify="center" stretch>
-          {_.map(categories, (topic) => {
-            return (
-              <TopicButton
-                key={topic.key}
-                topic={topic}
-                onPress={() => {
-                  updateContext({
-                    filter: topic.key,
-                    filterVersion: Date.now(),
-                  });
-                  navigation.pop();
-                }}
-              />
-            );
-          })}
-
-          <Pressable
-            style={{
-              backgroundColor: theme.colors.background250,
-              borderRadius: 60,
-              margin: theme.baseUnit * 2,
-            }}
-            onPress={() => {
-              updateContext({filter: null, filterVersion: Date.now()});
-              navigation.pop();
-            }}>
-            <Text
-              adjustsFontSizeToFit
-              numberOfLines={1}
-              style={{
-                paddingVertical: theme.baseUnit * 2,
-                paddingHorizontal: theme.baseUnit * 8,
-                fontFamily: 'Avenir Next',
-                color: theme.colors.text400,
-                fontSize: 22,
-                lineHeight: 32,
-                fontWeight: '600',
-              }}>
-              Show All
-            </Text>
-          </Pressable>
+        <WContainer row style={{flexWrap: 'wrap'}} justify="flex-start" stretch>
+          {_.map(packData.topics, (topic) => (
+            <TopicButton
+              key={topic.key}
+              topic={topic}
+              onPress={() => {
+                updateContext({
+                  filter: topic.key,
+                  cardIndex: 0,
+                });
+                navigation.pop();
+              }}
+            />
+          ))}
         </WContainer>
+
+        <Pressable
+          style={{
+            backgroundColor: theme.colors.background250,
+            borderRadius: 60,
+            margin: theme.baseUnit * 2,
+          }}
+          onPress={() => {
+            updateContext({
+              filter: null,
+              cardIndex: 0,
+            });
+            navigation.pop();
+          }}>
+          <Text
+            adjustsFontSizeToFit
+            numberOfLines={1}
+            style={{
+              paddingVertical: theme.baseUnit * 2,
+              paddingHorizontal: theme.baseUnit * 8,
+              fontFamily: 'Avenir Next',
+              color: theme.colors.text400,
+              fontSize: 22,
+              lineHeight: 32,
+              fontWeight: '600',
+            }}>
+            Show All
+          </Text>
+        </Pressable>
+
         <WContainer wPaddingBottom={4} />
       </WContainer>
     </PartialModal>

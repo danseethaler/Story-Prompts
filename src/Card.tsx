@@ -16,9 +16,10 @@ import {
 } from 'react-native';
 import {captureRef, releaseCapture} from 'react-native-view-shot';
 import {LinearButton, WContainer} from 'wComponents';
-import {APP_STORE_URL, categories} from 'wConfig';
-import {screenHeight, screenWidth, useStyledTheme} from 'wStyled';
+import {APP_STORE_URL} from 'wConfig';
+import {useStyledTheme} from 'wStyled';
 import {CardType, ModalStackNavigation} from 'wTypes';
+import useAppContext from './hooks/useAppContext';
 
 interface Props extends CardType {
   panHandlers: GestureResponderHandlers | null;
@@ -38,10 +39,11 @@ const Card: React.FC<Props> = ({
   song = false,
 }) => {
   const navigation = useNavigation<ModalStackNavigation<'Dashboard'>>();
+  const {packData} = useAppContext();
   const theme = useStyledTheme();
   const topicColor = theme.topicColors[topic];
   const topicColorLight = theme.topicColorsLight[topic];
-  const {title} = categories[topic];
+  const {title} = packData.topics[topic];
 
   const cardRef = useRef();
   const [isCapturing, setIsCapturing] = useState(false);

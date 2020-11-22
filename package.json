@@ -6,7 +6,8 @@
     "ios": "expo start --ios",
     "test": "jest",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "verifyTsx": "npx tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.10",

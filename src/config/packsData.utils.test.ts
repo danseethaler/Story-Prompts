@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import cardData from './cardData';
-import {getShuffledCards} from './cardData.utils';
+import packsData from './packsData';
+import {getShuffledCards} from './packsData.utils';
 
-const shuffledCards = getShuffledCards();
+const shuffledCards = getShuffledCards(packsData.quotes.cardData);
 
 const topicPartners = _(shuffledCards)
   .map((card, index) => {
@@ -16,11 +16,11 @@ const topicPartners = _(shuffledCards)
   .filter()
   .value();
 
-// Ensure no categories are sequential in shuffled list
-test.each(topicPartners)('Partner Categories: (s%s, %s)', (topic1, topic2) => {
+// Ensure no topics are sequential in shuffled list
+test.each(topicPartners)('Partner Topics: (s%s, %s)', (topic1, topic2) => {
   expect(topic1).not.toEqual(topic2);
 });
 
 test('shuffledCards should include all card data', () => {
-  expect(shuffledCards).toHaveLength(cardData.length);
+  expect(shuffledCards).toHaveLength(packsData.quotes.cardData.length);
 });

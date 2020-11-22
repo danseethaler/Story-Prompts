@@ -1,9 +1,8 @@
 import _ from 'lodash';
 import {CardType} from 'wTypes';
-import cardData from './cardData';
 
-export const getShuffledCards = () => {
-  const shuffledCards = _.shuffle(cardData);
+export const getShuffledCards = (cards: CardType[]) => {
+  const shuffledCards = _.shuffle(cards);
   const groups = _.groupBy(shuffledCards, 'topic');
   const uniqueKeys = _.keys(groups);
 

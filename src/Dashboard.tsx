@@ -1,7 +1,7 @@
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import React, {useEffect, useRef, useState} from 'react';
-import {Animated, LayoutAnimation, Text} from 'react-native';
+import {Animated, Image, LayoutAnimation, Text} from 'react-native';
 import {
   AnimatedGradientChild,
   BothSafeArea,
@@ -20,7 +20,7 @@ type Props = ModalStackNavProps<'Dashboard'>;
 
 const Dashboard: React.FC<Props> = ({navigation}) => {
   const theme = useStyledTheme();
-  const {activeCards, setActiveCardIndex} = useAppContext();
+  const {activeCards, packData, goToNextCardIndex} = useAppContext();
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -47,7 +47,7 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
     };
   }, []);
 
-  let nextButtonOpacity: Number | Animated.AnimatedInterpolation = 1;
+  let nextButtonOpacity: number | Animated.AnimatedInterpolation = 1;
   if (activeCards.length === 2) {
     nextButtonOpacity = offsetValue.interpolate({
       inputRange: [0, CARD_DRAG_RANGE],
@@ -60,15 +60,14 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
 
   return (
     <BothSafeArea bottomColor={theme.colors.background250}>
-      <WContainer flex={1} align="center" stretch wPadding={[3, 0]}>
+      <WContainer flex={1} align="center" wPadding={[3, 0]}>
         {/* Top buttons */}
         <WContainer
           align="center"
           justify="center"
-          stretch={menuOpen}
           wMargin={[0, 2]}
           style={{
-            borderRadius: menuOpen ? 20 : 40,
+            borderRadius: 32,
             overflow: 'hidden',
           }}>
           <ScaleButton
@@ -86,11 +85,11 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
               setMenuOpen(!menuOpen);
             }}>
             <WContainer
+              stretch
               row
-              wMargin={[menuOpen ? 2 : 0, 1]}
-              wPadding={1}
+              wPadding={menuOpen ? [2, 4] : [1, 2]}
               align="center"
-              justify="center">
+              justify="flex-start">
               <WContainer row align="center" justify="center">
                 <AnimatedGradientChild color1={colors[2]}>
                   {({colors: animatedColors}) => (
@@ -98,19 +97,25 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
                       name="menu-down"
                       size={32}
                       color={animatedColors[0]}
+                      style={{
+                        transform: [
+                          {scale: 1.5},
+                          {rotate: menuOpen ? '180deg' : '0deg'},
+                        ],
+                      }}
                     />
                   )}
                 </AnimatedGradientChild>
                 <Text
                   style={{
-                    paddingLeft: 4,
+                    paddingLeft: 12,
                     paddingRight: 8,
                     fontSize: 20,
                     color: theme.colors.text600,
                     fontFamily: 'Avenir Next',
                     fontWeight: '600',
                   }}>
-                  Starter Pack
+                  {packData.title}
                 </Text>
               </WContainer>
             </WContainer>
@@ -130,13 +135,13 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
                   });
                   setMenuOpen(false);
 
-                  navigation.navigate('Packs');
+                  navigation.navigate('Topics');
                 }}>
-                <WContainer stretch row wPadding={[2, 4]} align="center">
+                <WContainer stretch row wPadding={[3, 4, 2, 4]} align="center">
                   <AnimatedGradientChild color1={colors[2]}>
                     {({colors: animatedColors}) => (
                       <MaterialCommunityIcons
-                        name="cards"
+                        name="filter-outline"
                         size={32}
                         color={animatedColors[0]}
                       />
@@ -151,7 +156,7 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
                       fontFamily: 'Avenir Next',
                       fontWeight: '600',
                     }}>
-                    Select a Pack
+                    Filter by Topic
                   </Text>
                 </WContainer>
               </ScaleButton>
@@ -168,18 +173,13 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
                   });
                   setMenuOpen(false);
 
-                  navigation.navigate('Topics');
+                  navigation.navigate('Packs');
                 }}>
-                <WContainer stretch row wPadding={[2, 4]} align="center">
-                  <AnimatedGradientChild color1={colors[2]}>
-                    {({colors: animatedColors}) => (
-                      <MaterialCommunityIcons
-                        name="checkbox-multiple-blank"
-                        size={32}
-                        color={animatedColors[0]}
-                      />
-                    )}
-                  </AnimatedGradientChild>
+                <WContainer stretch row wPadding={[2, 4, 3, 4]} align="center">
+                  <Image
+                    source={require('../assets/StoryPacksLogoTransparentStraight.png')}
+                    style={{width: 34, height: 34}}
+                  />
                   <Text
                     style={{
                       paddingLeft: 12,
@@ -189,7 +189,7 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
                       fontFamily: 'Avenir Next',
                       fontWeight: '600',
                     }}>
-                    Topics
+                    Select a Pack
                   </Text>
                 </WContainer>
               </ScaleButton>
@@ -200,7 +200,6 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
         {/* Card Stack */}
         <CardStack
           cards={activeCards}
-          setActiveCardIndex={setActiveCardIndex}
           offSetMoveHandler={offSetMoveHandler}
           offsetValue={offsetValue}
           cardPanMoveHandler={cardPanMoveHandler}
@@ -258,7 +257,7 @@ const Dashboard: React.FC<Props> = ({navigation}) => {
                     useNativeDriver: false,
                   }).start();
 
-                  setActiveCardIndex((activeIndex) => activeIndex + 1);
+                  goToNextCardIndex();
                 }, exitDuration);
               }}>
               <WContainer row align="center" justify="center">

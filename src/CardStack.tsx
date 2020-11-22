@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React, {useRef} from 'react';
 import {Animated, PanResponder, PanResponderGestureState} from 'react-native';
 import {CARD_DRAG_RANGE} from 'wConfig';
+import {useAppContext} from 'wHooks';
 import {CardType} from 'wTypes';
 import Card from './Card';
 import WContainer from './components/WContainer';
@@ -9,7 +10,6 @@ import {screenHeight, screenWidth} from './styled/sizing';
 
 interface Props {
   cards: CardType[];
-  setActiveCardIndex: React.Dispatch<React.SetStateAction<number>>;
   offsetValue: Animated.Value;
   offSetMoveHandler: (e: PanResponderGestureState) => void;
   cardPanValue: Animated.ValueXY;
@@ -18,14 +18,12 @@ interface Props {
 
 const CardStack: React.FC<Props> = ({
   cards,
-  setActiveCardIndex,
   cardPanMoveHandler,
   cardPanValue,
   offSetMoveHandler,
   offsetValue,
 }) => {
-  const handleRemove = () =>
-    setActiveCardIndex((activeIndex) => activeIndex + 1);
+  const {goToNextCardIndex} = useAppContext();
 
   const panResponder = useRef(
     PanResponder.create({
@@ -85,7 +83,7 @@ const CardStack: React.FC<Props> = ({
               useNativeDriver: false,
             }).start();
 
-            handleRemove();
+            goToNextCardIndex();
           }, exitDuration);
         } else {
           Animated.spring(cardPanValue, {

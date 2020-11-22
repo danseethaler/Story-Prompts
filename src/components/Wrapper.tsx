@@ -38,9 +38,8 @@ export const BottomSafeArea: React.FC = ({children}) => {
 };
 
 export const BothSafeArea: React.FC<{
-  topColor?: string;
   bottomColor?: string;
-}> = ({children, topColor, bottomColor}) => {
+}> = ({children, bottomColor}) => {
   const theme = useStyledTheme();
 
   return (

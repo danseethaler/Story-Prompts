@@ -1,17 +1,19 @@
 import _ from 'lodash';
 import React from 'react';
-import {Image, Pressable, Text} from 'react-native';
-import {TopicButton, PartialModal, WContainer} from 'wComponents';
-import {categories} from 'wConfig';
+import {Image, Text} from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
+import {PackButton, PartialModal, WContainer} from 'wComponents';
+import {getShuffledCards, packsData} from 'wConfig';
 import {useAppContext} from 'wHooks';
 import {ModalStackNavProps} from 'wTypes';
+import {screenWidth} from './styled/sizing';
 import {useStyledTheme} from './styled/styled';
 
 type Props = ModalStackNavProps<'Packs'>;
 
 const Packs: React.FC<Props> = ({navigation}) => {
   const theme = useStyledTheme();
-  const {updateContext} = useAppContext();
+  const {updateContext, packData} = useAppContext();
 
   return (
     <PartialModal closeModal={() => navigation.pop()}>
@@ -22,6 +24,7 @@ const Packs: React.FC<Props> = ({navigation}) => {
         wPadding={[0, 2]}
         style={{
           alignSelf: 'center',
+          width: screenWidth,
           maxWidth: 500,
           borderRadius: 40,
           backgroundColor: theme.colors.background100,
@@ -35,67 +38,59 @@ const Packs: React.FC<Props> = ({navigation}) => {
             backgroundColor: theme.colors.background300,
           }}
         />
-        <WContainer wPadding={1} row align="center" justify="center">
-          <Image
-            source={require('../assets/StoryPacksLogoTransparentStraight.png')}
-            style={{width: 48, height: 48}}
-          />
-          <Text
-            style={{
-              paddingLeft: 6,
-              paddingBottom: 4,
-              fontFamily: 'Avenir Next',
-              fontWeight: '600',
-              fontSize: 42,
-              color: theme.colors.text400,
-              textAlignVertical: 'center',
-            }}>
-            Packs
-          </Text>
-        </WContainer>
-        <WContainer row style={{flexWrap: 'wrap'}} justify="center" stretch>
-          {_.map(categories, (topic) => {
-            return (
-              <TopicButton
-                key={topic.key}
-                topic={topic}
-                onPress={() => {
-                  updateContext({
-                    filter: topic.key,
-                    filterVersion: Date.now(),
-                  });
-                  navigation.pop();
-                }}
-              />
-            );
-          })}
-
-          <Pressable
-            style={{
-              backgroundColor: theme.colors.background250,
-              borderRadius: 60,
-              margin: theme.baseUnit * 2,
-            }}
-            onPress={() => {
-              updateContext({filter: null, filterVersion: Date.now()});
-              navigation.pop();
-            }}>
+        <ScrollView style={{alignSelf: 'stretch'}}>
+          <WContainer
+            wMarginTop={2}
+            wPaddingBottom={2}
+            wMarginBottom={1}
+            row
+            align="center"
+            justify="center">
+            <Image
+              source={require('../assets/StoryPacksLogoTransparentStraight.png')}
+              style={{width: 48, height: 48}}
+            />
             <Text
-              adjustsFontSizeToFit
-              numberOfLines={1}
               style={{
-                paddingVertical: theme.baseUnit * 2,
-                paddingHorizontal: theme.baseUnit * 8,
+                paddingLeft: 6,
+                paddingBottom: 4,
                 fontFamily: 'Avenir Next',
-                color: theme.colors.text400,
-                fontSize: 22,
-                lineHeight: 32,
-                fontWeight: '600',
+                fontWeight: '700',
+                fontSize: 32,
+                color: theme.colors.text700,
+                textAlignVertical: 'center',
               }}>
-              Show All
+              Packs
             </Text>
-          </Pressable>
-        </WContainer>
+          </WContainer>
+          <WContainer
+            stretch
+            justify="center"
+            align="center"
+            wPaddingBottom={3}>
+            {_.map(packsData, (pack) => {
+              return (
+                <PackButton
+                  key={pack.key}
+                  pack={pack}
+                  onPress={() => {
+                    const newPackSelected = pack.key !== packData.key;
+                    if (newPackSelected) {
+                      updateContext({
+                        packData: pack,
+                        filter: null,
+                        availableCards: getShuffledCards(pack.cardData),
+                        cardIndex: 0,
+                      });
+                    }
+
+                    navigation.pop();
+                  }}
+                />
+              );
+            })}
+          </WContainer>
+        </ScrollView>
         <WContainer wPaddingBottom={4} />
       </WContainer>
     </PartialModal>
