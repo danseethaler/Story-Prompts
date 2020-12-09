@@ -526,9 +526,9 @@ const newlywedsPack: PackType = {
 };
 
 const packs = {
-  starter: starterPack,
+  // starter: starterPack,
   quotes: quotesPack,
-  newlyweds: newlywedsPack,
+  // newlyweds: newlywedsPack,
 };
 
 export default packs;

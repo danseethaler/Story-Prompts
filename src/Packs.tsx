@@ -89,6 +89,17 @@ const Packs: React.FC<Props> = ({navigation}) => {
                 />
               );
             })}
+            <WContainer wPaddingTop={1}>
+              <Text
+                style={{
+                  fontFamily: 'Avenir Next',
+                  fontWeight: '600',
+                  fontSize: 20,
+                  color: theme.colors.text600,
+                }}>
+                More packs coming soon!
+              </Text>
+            </WContainer>
           </WContainer>
         </ScrollView>
         <WContainer wPaddingBottom={4} />
