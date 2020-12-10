@@ -399,7 +399,7 @@ const quotesPack: PackType = {
       quote:
         'All we have to decide is what to do with the time that is given to us.',
       prompt: 'Share a story about ____________.',
-      source: 'Gandolf',
+      source: 'Gandalf',
       topic: 'wild',
     },
     {
